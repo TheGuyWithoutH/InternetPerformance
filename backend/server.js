@@ -1,3 +1,9 @@
+/**
+ * @file  Entry point of the server. It starts the node server based on the express app in {@link ./app.js}
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 const http = require('http');
 const app = require('./app');
 
@@ -13,7 +19,7 @@ const normalizePort = val => {
   return false;
 };
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 const errorHandler = error => {

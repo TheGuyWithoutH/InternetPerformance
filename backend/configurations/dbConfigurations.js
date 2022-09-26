@@ -1,9 +1,15 @@
-/*
-*   Configuration used for connecting the app to the MongoDB Server.
-*   
-*/
-const mongoose = require('mongoose');
+/**
+ * @file Manage the configuration and connection to Mongoose
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
 
+const { MongoClient, Db } = require("mongodb");
+
+
+/**
+ * Configuration used for connecting the app to the MongoDB Server.
+ */
 const config = {
     username: 'USERNAME',
     password: 'PASSWORD',
@@ -12,14 +18,25 @@ const config = {
     databaseName: 'DATABASE_NAME',
 }
 
-const dbConnect = () => {
-    //mongoose.connect(`mongodb://${config.username}:${config.password}@${config.host}:${config.port || 27017}/${config.databaseName}`,
-    mongoose.connect(`mongodb://localhost:27017/test_semester_project`,
-        { useNewUrlParser: true,
-        useUnifiedTopology: true })
-        .then(() => console.log('Connexion à MongoDB réussie !'))
-        .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+/**
+ * Connect mongoose to the database, given the parameters
+ * @return {Db} The database to connect to
+ */
+
+const dbConnect = () => {
+    let connString = config.username ? `mongodb://${config.username}:${config.password}@${config.host}:${config.port || 27017}/${config.databaseName}` : `mongodb://${config.host}:${config.port || 27017}/${config.databaseName}`
+
+    //return new MongoClient(connString)
+    const client = new MongoClient(`mongodb://127.0.0.1:27017`)
+    const database = client.db('test_semester_project')
+
+    database.command({ ping: 1 }).then(() => 
+        console.log("Connected successfully to MongoDB")).catch(() => 
+        console.log("Error during connection to database")
+        )
+
+    return database
 }
 
 module.exports = dbConnect
