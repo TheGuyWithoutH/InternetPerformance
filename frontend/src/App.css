@@ -1,0 +1,48 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: end;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.logo {
+  height: 30vh;
+  margin-left: 2vw;
+}
+
+h1 {
+  padding-left: 2vw;
+  text-align: left;
+  font-size: calc(10px + 15vmin);
+  margin-bottom: 0;
+  line-height: 100%;
+}
+
+h2 {
+  margin-bottom: 10vh;
+  margin-top: 0;
+  font-weight: 400;
+  text-align: left;
+  padding-left: 2vw;
+}
+
+.button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 3vmin;
+  background-color:#0795FE;
+  padding: 1vmin 2vmin;
+  border-radius: 4vmin;
+
+  font-weight: 600;
+  transition: all 2s;
+}
