@@ -5,20 +5,13 @@
  */
 
 const express = require('express');
-const connection = require('./configurations/dbConfigurations')
-const path = require('path');
 
 const app = express();
-const db = connection()
 
-app.get('/api/', (req, res, next) => {
-    db.collection('latency').findOne().then((doc) =>
-        res.status(200).json(doc)
-    ).catch((error) => {
-        res.status(400).json({
-          error: error
-        });
-    })
-})
+const queryRouter = require('./routes/api/queries')
+
+app.use('/api/query', queryRouter)
+
+
 
 module.exports = app;
