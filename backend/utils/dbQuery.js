@@ -8,6 +8,16 @@ const assert = require('node:assert').strict;
 const { MongoClient, MongoError } = require("mongodb");
 const Position = require('./position');
 
+/**
+ * Enum of types of queries
+ */
+exports.queryTypes = {
+    SPATIAL: "space",
+    TIME: "time",
+    COMBINED: "combined",
+    USERID: "userId",
+    STREAMID: "streamId"
+}
 
 /**
  * 
@@ -22,7 +32,7 @@ exports.timeQuery = async (db, parameters) => {
         }
     }
 
-    if(parameters.from && parameters.to) assert(parameters.from < parameters.to, "End date before Start date")
+    if(parameters.from && parameters.to) assert(parameters.from < parameters.to, Error("End date before Start date"))
 
     if(parameters.from) {
         query.date.$gte = parameters.from.valueOf() / 1000
@@ -77,34 +87,26 @@ exports.spaceQuery = (db, location, maxDistance=1000) => {
  * @param {object} parameters 
  */
 exports.query = (db, parameters) => {
-    if(parameters.area && parameters.timeZone) {
-        assert(parameters.area.position, "Area wrongly selected")
-        return this.spaceQuery(db, parameters.area.position, parameters.area.maxDistance).then(
-            (doc) => {
-                const users = doc.map((elem) => elem.user_id)
-                
-                let params = structuredClone(parameters.timeZone)
-                params.users = users
 
-                return this.timeQuery(db, params).then(
-                        (docEnd) => {
-                            console.log(typeof docEnd)
-                            docEnd.forEach((elem) => {
-                                elem.location = doc.find((val) => val.user_id == elem.user_id).location
-                        })
-                        return docEnd
-                })
-        })
-    } else if (parameters.area) {
-        assert(parameters.area.position, "Area wrongly selected")
-        return this.spaceQuery(db, parameters.area.position, parameters.area.maxDistance)
-    } else if (parameters.timeZone){
-        return this.timeQuery(db, parameters.timeZone)
-    } else if(Object.keys(parameters).length == 0) {
+    if(Object.keys(parameters).length == 0) {
         return _dbQuery(db, "latency", {})
-    } else {
-        throw new Error("Invalid arguments in parameters of the request")
     }
+
+    return this.spaceQuery(db, new Position(parameters.coordinates), parameters.maxDistance).then(
+        (doc) => {
+            const users = doc.map((elem) => elem.user_id)
+            
+            let params = structuredClone(parameters)
+            params.users = users
+
+            return this.timeQuery(db, params).then(
+                    (docEnd) => {
+                        docEnd.forEach((elem) => {
+                            elem.location = doc.find((val) => val.user_id == elem.user_id).location
+                    })
+                    return docEnd
+            })
+    })
 }
 
 

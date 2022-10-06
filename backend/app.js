@@ -10,6 +10,8 @@ const app = express();
 
 const queryRouter = require('./routes/api/queries')
 
+app.set('json spaces', 3);
+
 app.use('/api/query', queryRouter)
 
 
