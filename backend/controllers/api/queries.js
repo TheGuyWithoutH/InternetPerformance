@@ -5,10 +5,10 @@
  */
 
 const assert = require('node:assert').strict;
-const {latencyQuery: timeQuery, locationQuery: spaceQuery, query, queryTypes} = require('../../utils/dbQuery');
+const {latencyQuery: timeQuery, locationQuery: spaceQuery, query, queryTypes} = require('../../services/api/dbQuery');
 const Position = require('../../utils/position');
-const stats = require('../../utils/arrayStatistics')
-const connection = require('../../configurations/dbConfigurations');
+const stats = require('../../services/api/arrayStatistics')
+const connection = require('../../configs/db.config');
 const { UnorderedBulkOperation } = require('mongodb');
 
 const db = connection()
