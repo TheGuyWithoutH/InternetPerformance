@@ -1,3 +1,9 @@
+/**
+ * @file
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 class Position {
     constructor([long, lat]) {
         this.long = long

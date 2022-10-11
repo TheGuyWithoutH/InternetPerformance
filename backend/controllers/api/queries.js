@@ -1,13 +1,21 @@
+/**
+ * @file
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 const assert = require('node:assert').strict;
-const {timeQuery, spaceQuery, query, queryTypes} = require('../../utils/dbQuery');
+const {latencyQuery: timeQuery, locationQuery: spaceQuery, query, queryTypes} = require('../../utils/dbQuery');
 const Position = require('../../utils/position');
-const connection = require('../../configurations/dbConfigurations')
+const stats = require('../../utils/arrayStatistics')
+const connection = require('../../configurations/dbConfigurations');
+const { UnorderedBulkOperation } = require('mongodb');
 
 const db = connection()
 
 exports.makeGlobalQuery = (req, res, next) => {
 
-    let queryType
+    let queryType;
 
     //Check if query contains spatial params. If so, check formatting and transform coordinates into array
     if(req.query.coordinates || req.query.country || req.query.country_code || req.query.region || req.query.county || req.query.city) {
@@ -20,130 +28,116 @@ exports.makeGlobalQuery = (req, res, next) => {
         queryType = queryType === queryTypes.SPATIAL ? queryTypes.COMBINED : queryTypes.TIME
     }
 
-    
-    switch (queryType) {
-        case queryTypes.SPATIAL:
-
-            const maxDistance = req.query.maxDistance ? parseInt(req.query.maxDistance) : undefined
-            spaceQuery(db, new Position(req.query.coordinates), maxDistance)
-                .then((doc) => {
-                    res.status(200).json(doc)
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(400).json({
-                        error: error
-                    });
-                })
-            break;
-
-        case queryTypes.TIME:
-
-            timeQuery(db, req.query)
-                .then((doc) => {
-                    res.status(200).json(doc)
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(400).json({
-                        error: error
-                    });
-                })
-            break;
-
-        case queryTypes.COMBINED:
-            query(db, req.query)
-                .then((doc) => {
-                    res.status(200).json(doc)
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(400).json({
-                        error: error
-                    });
-                })
-            break;
-        default:
-            break;
+    if(Object.keys(req.query).length == 0 || !queryType) {
+        queryType = queryTypes.ALL
     }
 
+    query(db, req.query, queryType)
+        .then((doc) => {
+            let result = {}
+                
+            if(doc.length > 0) {
+                const latencyArray = doc.flatMap((elem) => elem.latencies.map((data) => data.latency))
 
+                result = req.query.latencyOnly ?
+                    {
+                        stats: makeStats(latencyArray),
+                        latencies: doc.flatMap((elem) => elem.latencies)
+                    } : {
+                        stats: makeStats(latencyArray),
+                        users: doc
+                    }
+            }
 
-
-    // if(req.query.start || req.query.end) {
-    //     if(req.query.long && req.query.lat) {
-    //         const maxDistance = req.query.maxDistance ? parseInt(req.query.maxDistance) : undefined
-
-    //         query(db, {area: {position: new Position([parseFloat(req.query.long), parseFloat(req.query.lat)]), maxDistance: maxDistance},
-    //                              timeZone: {from: new Date(parseInt(req.query.start)*1000), to: new Date(parseInt(req.query.end)*1000)}})
-    //             .then((doc) => {
-    //                 res.status(200).json(doc)
-    //             })
-    //             .catch((error) => {
-    //                 console.log(error)
-    //                 res.status(400).json({
-    //                     error: error
-    //                 });
-    //             })
-
-    //     } else {
-    //         timeQuery(db, {from: new Date(parseInt(req.query.start)*1000), to: new Date(parseInt(req.query.end)*1000)})
-    //             .then((doc) => {
-    //                 res.status(200).json(doc)
-    //             })
-    //             .catch((error) => {
-    //                 console.log(error)
-    //                 res.status(400).json({
-    //                     error: error
-    //                 });
-    //             })
-    //     }
-    // } else if (req.query.long && req.query.lat) {
-    //     const maxDistance = req.query.maxDistance ? parseInt(req.query.maxDistance) : undefined
-    //     spaceQuery(db, new Position([parseFloat(req.query.long), parseFloat(req.query.lat)]), maxDistance)
-    //         .then((doc) => {
-    //             res.status(200).json(doc)
-    //         })
-    //         .catch((error) => {
-    //             console.log(error)
-    //             res.status(400).json({
-    //                 error: error
-    //             });
-    //         })
-    // } else {
-    //     res.status(200).json({})
-    // }
-
+            res.status(200).json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(400).json({
+                error: error
+            });
+        })
+    
+           
 }
 
 exports.makeUserIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
     
-    if(req.query.latencyOnly === "on") {
-        
-    } else {
-        
-    }
+    query(db, {user_id: req.query.id, streamOn: req.query.streamId}, queryTypes.USERID)
+        .then((doc) => {
+            let result = {}
+            
+            if(doc.length > 0) {
+                const user = doc[0]
+                const latencyArray = user.latencies.map((data) => data.latency)
+
+                result = req.query.latencyOnly ?
+                {
+                    stats: makeStats(latencyArray),
+                    latencies: user.latencies
+                } : {
+                    stats: makeStats(latencyArray),
+                    user: user
+                }
+            }
+
+            res.status(200).json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(400).json({
+                error: error
+            });
+        })
 }
 
 exports.makeStreamIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
-    
-    if(req.query.latencyOnly === "on") {
-        
-    } else {
-        
-    }
+
+    query(db, {stream_id: req.query.id, streamOn: off}, queryTypes.STREAMID)
+        .then((doc) => {
+            let result = {}
+
+            if(doc.length > 0) {
+                const user = doc[0]
+                const latencyArray = user.latencies.map((data) => data.latency)
+                const stream = {
+                    stream_id: req.query.id,
+                    user_id: user.user_id,
+                    latencies: user.latencies,
+                    location: user.location
+                }
+
+                result = req.query.latencyOnly ?
+                {
+                    stats: makeStats(latencyArray),
+                    latencies: user.latencies
+                } : {
+                    stats: makeStats(latencyArray),
+                    stream: stream
+                }
+            }
+            
+            res.status(200).json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(400).json({
+                error: error
+            });
+        })
 }
 
-
-
-
-        // query(db, {area: {position: new Position([0.1967691, 48.0074054]), maxDistance: 500000}, timeZone: {from: new Date(1623354373*1000), to: new Date(1623369600*1000)}}).then((doc) => {
-        //     res.status(200).json(doc)}
-        //     ).catch((error) => {
-        //         console.log(error)
-        //         res.status(400).json({
-        //         error: error
-        //     });
-        // })
+const makeStats = (array) => {
+    return {
+        mean: stats.mean(array),
+        sd: stats.standardDeviavtion(array),
+        quartile1: stats.Q1(array),
+        median: stats.median(array),
+        quartile3: stats.Q3(array),
+        "10%": stats.quantile(array, 0.1),
+        "90%": stats.quantile(array, 0.9),
+        "99%": stats.quantile(array, 0.99)
+    }
+}

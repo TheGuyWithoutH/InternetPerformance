@@ -1,3 +1,11 @@
+/**
+ * @file
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
+const parseDate = require("../utils/parseDate")
+
 module.exports = (req, res, next) => {
     try{
         if(req.query.coordinates) req.query.coordinates = req.query.coordinates.split(",").map((str) => parseFloat(str))
@@ -5,19 +13,23 @@ module.exports = (req, res, next) => {
         if(req.query.maxDistance) req.query.maxDistance = parseInt(req.query.maxDistance)
     
         if(req.query.from) {
-            const arrayDate = req.query.from.split("-")
-    
-            if(arrayDate[0].length > 4) req.query.from = new Date(parseInt(arrayDate[0])*1000)
-            else if (arrayDate.length == 1) req.query.from = new Date(arrayDate[0], 1)
-            else req.query.from = new Date(req.query.from)
+            req.query.from = parseDate(req.query.from)
         }
     
         if(req.query.to) {
-            const arrayDate = req.query.to.split("-")
-    
-            if(arrayDate[0].length > 4) req.query.to = new Date(parseInt(arrayDate[0])*1000)
-            else if (arrayDate.length == 1) req.query.to = new Date(arrayDate[0], 1)
-            else req.query.to = new Date(req.query.to)
+            req.query.to = parseDate(req.query.to)
+        }
+
+        if(req.query.streamId && req.query.streamId === "on") {
+            req.query.streamId = true
+        } else {
+            req.query.streamId = false
+        }
+
+        if(req.query.latencyOnly && req.query.latencyOnly === "on") {
+            req.query.latencyOnly = true
+        } else {
+            req.query.latencyOnly = false
         }
     
         next()
