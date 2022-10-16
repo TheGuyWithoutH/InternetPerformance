@@ -1,11 +1,18 @@
 /**
- * @file
+ * @file Middleware to prepare arguments for the query
  * @author Ugo Balducci
  * @version 1.0.0
  */
 
+import {Request, Response, NextFunction} from 'express'
 const parseDate = require("../utils/parseDate")
 
+/**
+ * Middleware that finds request arguments to reformat them for queries.
+ * @param {Request} req The HTTP request received
+ * @param {Response} res The HTTP response that will be sent back
+ * @param {NextFunction} next The next middleware/controller to execute
+ */
 module.exports = (req, res, next) => {
     try{
         if(req.query.coordinates) req.query.coordinates = req.query.coordinates.split(",").map((str) => parseFloat(str))

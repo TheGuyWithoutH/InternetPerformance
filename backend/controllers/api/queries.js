@@ -1,11 +1,12 @@
 /**
- * @file
+ * @file Controllers for the API queries
  * @author Ugo Balducci
  * @version 1.0.0
  */
 
+import {Request, Response, NextFunction} from 'express'
 const assert = require('node:assert').strict;
-const {latencyQuery: timeQuery, locationQuery: spaceQuery, query, queryTypes} = require('../../services/api/dbQuery');
+const {query, queryTypes} = require('../../services/api/dbQuery');
 const Position = require('../../utils/position');
 const stats = require('../../services/api/arrayStatistics')
 const connection = require('../../configs/db.config');
@@ -13,6 +14,12 @@ const connection = require('../../configs/db.config');
 
 const db = connection()
 
+/**
+ * Controller for global queries based on location or time.
+ * @param {Request} req The HTTP request received
+ * @param {Response} res The HTTP response that will be sent back
+ * @param {NextFunction} next The next middleware/controller to execute
+ */
 exports.makeGlobalQuery = (req, res, next) => {
 
     let queryType;
@@ -61,6 +68,12 @@ exports.makeGlobalQuery = (req, res, next) => {
            
 }
 
+/**
+ * Controller for queries by user id
+ * @param {Request} req The HTTP request received
+ * @param {Response} res The HTTP response that will be sent back
+ * @param {NextFunction} next The next middleware/controller to execute
+ */
 exports.makeUserIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
     
@@ -92,6 +105,12 @@ exports.makeUserIdQuery = (req, res, next) => {
         })
 }
 
+/**
+ * Controller for queries based on stream id
+ * @param {Request} req The HTTP request received
+ * @param {Response} res The HTTP response that will be sent back
+ * @param {NextFunction} next The next middleware/controller to execute
+ */
 exports.makeStreamIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
 
@@ -129,6 +148,15 @@ exports.makeStreamIdQuery = (req, res, next) => {
         })
 }
 
+
+/* ________________________________________________________________________________________________________________ */
+
+
+/**
+ * Make basic statistics about an array of numbers like mean, standard deviation, median and some quantiles.
+ * @param {Array<Number>} array Number array to analyze
+ * @returns {Object} Javascript Object containing all the statistics
+ */
 const makeStats = (array) => {
     return {
         mean: stats.mean(array),

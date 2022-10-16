@@ -21,9 +21,10 @@ exports.queryTypes = {
 }
 
 /**
- * 
- * @param {MongoClient} db 
- * @param {object} parameters Javascript Object containing the parameters for the time request : @argument from specifies the start date while @argument to specifies the end date
+ * Performs the query on the specified database, on the collection with latencies and times.
+ * @param {MongoClient} db The database to query
+ * @param {Object} parameters Javascript Object containing the parameters for the time request : @argument from specifies the start date while @argument to specifies the end date
+ * @returns {Promise} A promise containing the result of the query on database
  */
 exports.latencyQuery = async (db, parameters) => {
     _checkCollectionExist(db, "latency");
@@ -61,10 +62,10 @@ exports.latencyQuery = async (db, parameters) => {
 
 
 /**
- * 
- * @param {MongoClient} db 
- * @param {Position} location 
- * @param {Number} maxDistance 
+ * Performs the query on the specified database, on the collection containing users and their location.
+ * @param {MongoClient} db The database to query
+ * @param {Object} parameters Javascript Object containing the parameters for the spatial request
+ * @returns {Promise} A promise containing the result of the query on database
  */
 exports.locationQuery = (db, parameters) => {
     _checkCollectionExist(db, "user_locations");
@@ -104,16 +105,15 @@ exports.locationQuery = (db, parameters) => {
         query.user_id = parameters.user_id
     }
 
-    // console.log(query)
-
     return _dbQuery(db, "user_locations", [{$match: query}])
 }
 
 
 /**
- * 
- * @param {MongoClient} db 
- * @param {object} parameters 
+ * Manages all the logic to perform queries of different query types.
+ * @param {MongoClient} db The database to query
+ * @param {object} parameters Javascript Object containing the parameters for the request
+ * @returns {Promise} A promise containing the result of the query on database
  */
 exports.query = (db, parameters, reqType) => {
 
@@ -161,9 +161,16 @@ exports.query = (db, parameters, reqType) => {
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/* ________________________________________________________________________________________________________________ */
 
+/**
+ * Sends the query to the database.
+ * @param {MongoClient} db The database to look into
+ * @param {String} collection The name of the collection
+ * @param {Array<Object>} aggregation The aggregation pipeline for the query
+ * @returns {Promise} A promise containing the result of the query on database in an array
+ */
 const _dbQuery = (db, collection, aggregation) => {
     return new Promise((resolve, reject) => {
         db.collection(collection).aggregate(aggregation)
@@ -174,7 +181,12 @@ const _dbQuery = (db, collection, aggregation) => {
     })
 }
 
-
+/**
+ * Check that a collection exists inside a database.
+ * @param {MongoClient} db The database to look into
+ * @param {String} collName The name of the collection
+ * @throws {MongoError} an error if the collection is not found
+ */
 const _checkCollectionExist = (db, collName) => {
     db.listCollections({name: collName}).next(function(err, collinfo) {
         if (!collinfo) {
@@ -184,6 +196,11 @@ const _checkCollectionExist = (db, collName) => {
     });
 }
 
+/**
+ * Prepare the accumulator for aggregation pipeline to combine outputs from same user.
+ * @param {Boolean} streamId Decides wether to includes stream ids or not in results
+ * @returns {Object} The accumulator "$group" for the aggregation pipeline
+ */
 const accumulator = (streamId) => {
     if(streamId)
         return {
@@ -213,7 +230,9 @@ const accumulator = (streamId) => {
 }
 
 
-
+/**
+ * Projection of data for the aggregation pipeline in order to reformat the outputs.
+ */
 const projection = {
     $project: {
         _id: 0,
