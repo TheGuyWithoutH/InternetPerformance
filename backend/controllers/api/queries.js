@@ -9,7 +9,7 @@ const {latencyQuery: timeQuery, locationQuery: spaceQuery, query, queryTypes} = 
 const Position = require('../../utils/position');
 const stats = require('../../services/api/arrayStatistics')
 const connection = require('../../configs/db.config');
-const { UnorderedBulkOperation } = require('mongodb');
+
 
 const db = connection()
 
