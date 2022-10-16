@@ -1,0 +1,34 @@
+const parseDate = require("../utils/parseDate")
+
+describe('Date tests', () =>  {
+
+    test('Empty date return an error', () => {
+        expect(() => parseDate()).toThrow()
+    })
+
+    test('Date works with Timestamp', () => {
+        //Sun, 10th February 2002 17:00 GMT
+        expect(parseDate("1013360400").toUTCString()).toBe(new Date(1013360400000).toUTCString())
+    })
+    
+    test('Date works with date string', () => {
+        //Sun, 10th February 2002 00:00 GMT
+        expect(parseDate("02-10-2002").toUTCString()).toBe(new Date(1013360400000).toUTCString())
+    })
+    
+    test('Date works with date string without day', () => {
+        //Fri, 1st February 2002 00:00 GMT
+        expect(parseDate("02-2002").toUTCString()).toBe(new Date(1012521600000).toUTCString())
+    })
+    
+    test('Date works with year only', () => {
+        //Tue, 1st January 2002 00:00 GMT
+        expect(parseDate("2002").toUTCString()).toBe(new Date(1009843200000).toUTCString())
+    })
+    
+    test('Wrong formatting returns an error', () => {
+        expect(parseDate("Sun, 10 Feb 2002")).toThrow()
+    })
+
+
+})
