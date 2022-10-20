@@ -4,7 +4,7 @@
   "description": "Backend of the Project \"Mapping Internet Performances\" - EPFL 2022",
   "main": "app.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --silent=false",
     "start": "nodemon server"
   },
   "author": "",

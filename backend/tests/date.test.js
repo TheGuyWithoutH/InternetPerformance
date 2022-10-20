@@ -13,12 +13,12 @@ describe('Date tests', () =>  {
     
     test('Date works with date string', () => {
         //Sun, 10th February 2002 00:00 GMT
-        expect(parseDate("02-10-2002").toUTCString()).toBe(new Date(1013360400000).toUTCString())
+        expect(parseDate("2002-02-10").toUTCString()).toBe(new Date(1013299200000).toUTCString())
     })
     
     test('Date works with date string without day', () => {
         //Fri, 1st February 2002 00:00 GMT
-        expect(parseDate("02-2002").toUTCString()).toBe(new Date(1012521600000).toUTCString())
+        expect(parseDate("2002-02").toUTCString()).toBe(new Date(1012521600000).toUTCString())
     })
     
     test('Date works with year only', () => {
@@ -27,7 +27,7 @@ describe('Date tests', () =>  {
     })
     
     test('Wrong formatting returns an error', () => {
-        expect(parseDate("Sun, 10 Feb 2002")).toThrow()
+        expect(() => parseDate("Sun, 10 Feb 2002")).toThrow(Error)
     })
 
 

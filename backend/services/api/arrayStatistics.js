@@ -10,6 +10,7 @@
  * @returns {Number} The sum of the array
  */
 exports.sum = (array) => {
+    Preconditions(array)
     return array.reduce((p, n) => p + n, 0)
 }
 
@@ -19,6 +20,7 @@ exports.sum = (array) => {
  * @returns {Number} The mean of the array
  */
 exports.mean = (array) => {
+    Preconditions(array)
     return this.sum(array) / array.length
 }
 
@@ -27,22 +29,31 @@ exports.mean = (array) => {
  * @param {Array<Number>} array The array to analyze
  * @returns {Number} The standard deviation of the array
  */
-exports.standardDeviavtion = (array) => {
+exports.standardDeviation = (array) => {
+    Preconditions(array)
     const mean = this.mean(array)
-    const variance = array.reduce((p, n) => p + n - mean, 0) / array.length
+    let variance
+
+    if(mean === Number.POSITIVE_INFINITY) {
+        variance = array.every(elem => elem === Number.POSITIVE_INFINITY) ? 0 : Number.POSITIVE_INFINITY
+    } else {
+        variance = array.reduce((p, n) =>  p + (n - mean)**2, 0) / array.length
+    }
+
     return Math.sqrt(variance)
 }
 
 /**
  * Gives the {percent}% quantile of an array of numbers
  * @param {Array<Number>} array The array to analyze
- * @param {*} percent 
+ * @param {Number} percent 
  * @returns {Number} The n% quantile of the array
  */
 exports.quantile = (array, percent) => {
+    Preconditions(array)
     const newArray = sort(array)
     const mid = array.length * percent
-    return mid % 1 ? newArray[Math.floor(mid)] : (newArray[mid + 1] + newArray[mid]) / 2 
+    return mid % 1 ? newArray[Math.floor(mid)] : (newArray[mid] + newArray[mid - 1]) / 2 
 }
 
 /**
@@ -51,6 +62,7 @@ exports.quantile = (array, percent) => {
  * @returns {Number} The median of the array
  */
 exports.median = (array) => {
+    Preconditions(array)
     return this.quantile(array, 0.5)
 }
 
@@ -60,6 +72,7 @@ exports.median = (array) => {
  * @returns {Number} The 1st quartile of the array
  */
 exports.Q1 = (array) => {
+    Preconditions(array)
     return this.quantile(array, .25)
 }
 
@@ -69,6 +82,7 @@ exports.Q1 = (array) => {
  * @returns {Number} The 3rd quartile of the array
  */
 exports.Q3 = (array) => {
+    Preconditions(array)
     return this.quantile(array, .75)
 }
 
@@ -83,4 +97,14 @@ exports.Q3 = (array) => {
 const sort = (array) => {
     const newArray = [...array]
     return newArray.sort((a, b) => a - b)
+}
+
+/**
+ * Basic checks for validity of an array for statistics
+ * @param {Array} array the array to analyze
+ * @throws {Error} An error if array is empty or contains invalid numbers
+ */
+const Preconditions = (array) => {
+    if(array.length === 0) throw new Error("Empty Array")
+    if(array.find(x => isNaN(x))) throw new Error("Array contains invalid members")
 }

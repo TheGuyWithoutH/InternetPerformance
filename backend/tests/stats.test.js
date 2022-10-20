@@ -1,4 +1,4 @@
-const { sum, mean, median, quantile, Q1, Q3 } = require("../services/api/arrayStatistics")
+const { sum, mean, standardDeviation: sd, median, quantile, Q1, Q3 } = require("../services/api/arrayStatistics")
 
 describe("Tests Sum", () => {
     test("Sum of empty array", () => {
@@ -93,8 +93,8 @@ describe("Tests Standard Deviation", () => {
 
     test("Standard Deviation of array with multiple element", () => {
         expect(sd([0, 0, 0, 0, 0])).toBe(0)
-        expect(sd([1, 2, 3, 4, 5])).toBe(sqrt(2))
-        expect(sd([256, 512, 895, 100054])).toBe(43085.219619813)
+        expect(sd([1, 2, 3, 4, 5])).toBeCloseTo(Math.sqrt(2))
+        expect(sd([256, 512, 895, 100054])).toBeCloseTo(43085.219619813)
         expect(sd([Number.POSITIVE_INFINITY, 1, 8, 17, 87])).toBe(Number.POSITIVE_INFINITY)
     })
 
@@ -142,7 +142,7 @@ describe("Tests Quantiles", () => {
         expect(quantile([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], 0.9)).toBe(27.5)
         expect(quantile([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 0.9)).toBe(29)
         expect(quantile([31682, 266297, 638078, 1142858, 1418590, 1534591, 2793397, 2854826, 2873304, 2945384, 3162466, 3194253, 4684897, 5299317, 5310666, 5557836, 5656558, 5684523, 5736026, 6372255, 6659620, 7143824, 7271886, 7281370, 7573523, 8068853, 8208718, 8984704, 9311923, 9470269], 0.9)).toBe(8596711)
-        expect(quantile([1, 26, 31682, 266297, 638078, 1142858, 1418590, 1534591, 2793397, 2854826, 2873304, 2945384, 3162466, 3194253, 4684897, 5299317, 5310666, 5557836, 5656558, 5684523, 5736026, 6372255, 6659620, 7143824, 7271886, 7281370, 7573523, 8068853, 8208718, 8984704, 9311923, 9470269], 0.9)).toBe(9311923)
+        expect(quantile([1, 26, 31682, 266297, 638078, 1142858, 1418590, 1534591, 2793397, 2854826, 2873304, 2945384, 3162466, 3194253, 4684897, 5299317, 5310666, 5557836, 5656558, 5684523, 5736026, 6372255, 6659620, 7143824, 7271886, 7281370, 7573523, 8068853, 8208718, 8984704, 9311923, 9470269], 0.9)).toBe(8208718)
         expect(quantile([Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, Number.POSITIVE_INFINITY, 1, 8, 17, 87], 0.9)).toBe(Number.POSITIVE_INFINITY)
     })
 

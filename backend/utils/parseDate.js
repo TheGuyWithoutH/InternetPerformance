@@ -10,9 +10,24 @@
  * @returns {Date} Javascript Date in UTC timezone
  */
 module.exports = (dateString) => {
-    const arrayDate = dateString.split("-")
+    const arrayDate = dateString.split("-").map(el => {
+        const value = parseInt(el)
+        if(isNaN(value)) throw new Error("Wrong Date Format")
+        return value
+    })
+    let date;
     
-    if(arrayDate[0].length > 4) return new Date(parseInt(arrayDate[0])*1000)
-    else if (arrayDate.length == 1) return new Date(Date.UTC(parseInt(arrayDate[0])))
-    else return new Date(dateString)
+    if(arrayDate[0] > 3000) {
+        date = new Date(arrayDate[0] * 1000)
+        date.setTime(date.getTime() + date.getTimezoneOffset() * 60000)
+    }
+    else {
+        arrayDate[1] = arrayDate[1] ? arrayDate[1] - 1 : 0
+        date = new Date(...arrayDate)
+    }
+
+
+    return new Date(Date.UTC(date.getFullYear(), date.getMonth() | 0,
+        date.getDate() | 0, date.getHours() | 0,
+        date.getMinutes() | 0, date.getSeconds() | 0));
 }

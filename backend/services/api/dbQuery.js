@@ -40,7 +40,7 @@ exports.latencyQuery = async (db, parameters) => {
 
     if(parameters.to) {
         if(!query.date) query.date = {}
-        query.date.$lte = parameters.to.valueOf() / 1000
+        query.date.$lt = parameters.to.valueOf() / 1000
     }
 
     if(parameters.users) {
