@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 
-import {Request, Response, NextFunction} from 'express'
+const {Request, Response, NextFunction} = require('express')
 const parseDate = require("../utils/parseDate")
 
 /**
