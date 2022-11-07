@@ -134,8 +134,9 @@ _dbQuery(db,
 
                     //  3. If the name exists in geoname, update the entry
                     if (res) {
-                        const query = { $set: { ['location.' + parameters.fieldUpdated]: res.asciiname } }
-                        return db.collection(parameters.location_collection_name).updateOne({ _id: elem._id }, query).then(upd => {
+                        const query = elem
+                        query.location[parameters.fieldUpdated] = res.asciiname
+                        return db.collection(parameters.location_collection_name + "_new").insertOne(query).then(upd => {
                             return 1
                         })
                     } else {
