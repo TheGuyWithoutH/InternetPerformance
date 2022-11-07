@@ -83,16 +83,10 @@ _dbQuery(db,
     parameters.location_collection_name,
     [{
         $match: { ['location.' + parameters.fieldUpdated]: { $exists: true } }
-    },
-    {
-        $project:
-        {
-            user_id: 1,
-            ['location.' + parameters.fieldUpdated]: 1,
-        }
     }]).then(
         (doc) => {
             doc = doc.filter(elem => elem.location[parameters.fieldUpdated] && elem.location[parameters.fieldUpdated] !== null)
+            doc = doc.slice(0, 100)
             const count = doc.length
 
             //  2. Translate them all concurrently
