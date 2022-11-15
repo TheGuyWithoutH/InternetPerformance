@@ -9,10 +9,10 @@ const assert = require('node:assert').strict;
 const {query, queryTypes} = require('../../services/api/dbQuery');
 const Position = require('../../utils/position');
 const stats = require('../../services/api/arrayStatistics')
-const connection = require('../../configs/db.config');
+const { dbConnect } = require('../../configs/db.config');
 
 
-const db = connection()
+const db = dbConnect()
 
 /**
  * Controller for global queries based on location or time.

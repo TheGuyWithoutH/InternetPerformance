@@ -6,7 +6,7 @@
 
 const assert = require('node:assert').strict;
 const { MongoClient, MongoError } = require("mongodb");
-const { config } = require('../../configs/db.config.js');
+const { config } = require('../../configs/db.config');
 
 /**
  * Enum of types of queries
@@ -28,7 +28,7 @@ exports.queryTypes = {
  * @returns {Promise} A promise containing the result of the query on database
  */
 exports.latencyQuery = async (db, parameters) => {
-    _checkCollectionExist(db, "latency");
+    _checkCollectionExist(db, config.latencyCollectionName);
 
     let query = {}
 
@@ -69,7 +69,7 @@ exports.latencyQuery = async (db, parameters) => {
  * @returns {Promise} A promise containing the result of the query on database
  */
 exports.locationQuery = (db, parameters) => {
-    _checkCollectionExist(db, "user_locations");
+    _checkCollectionExist(db, config.userCollectionName);
 
     const query = {}
 
@@ -193,7 +193,7 @@ const _checkCollectionExist = (db, collName) => {
     db.listCollections({name: collName}).next(function(err, collinfo) {
         if (!collinfo) {
             // The collection does not exist
-            throw new MongoError("The collection 'latency' does not exist")
+            throw new MongoError("The collection " + collName + " does not exist")
         }
     });
 }
