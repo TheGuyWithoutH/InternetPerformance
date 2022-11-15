@@ -27,10 +27,11 @@ exports.config = {
  */
 
 const dbConnect = () => {
-    let connString = config.username ? `mongodb://${config.username}:${config.password}@${config.host}:${config.port || 27017}/${config.databaseName}` : `mongodb://${config.host}:${config.port || 27017}/${config.databaseName}`
+    let connString = this.config.username ? `mongodb://${this.config.username}:${this.config.password}@${this.config.host}:${this.config.port || 27017}/${this.config.databaseName}` 
+                    : `mongodb://${this.config.host}:${this.config.port || 27017}/${this.config.databaseName}`
 
     const client = new MongoClient(connString)
-    const database = client.db(config.databaseName)
+    const database = client.db(this.config.databaseName)
 
     database.command({ ping: 1 }).then(() => 
         console.log("Connected successfully to MongoDB")).catch(() => 
