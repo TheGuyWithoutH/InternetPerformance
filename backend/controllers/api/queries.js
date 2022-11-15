@@ -148,6 +148,42 @@ exports.makeStreamIdQuery = (req, res, next) => {
         })
 }
 
+/**
+ * Controller for world map queries
+ * @param {Request} req The HTTP request received
+ * @param {Response} res The HTTP response that will be sent back
+ * @param {NextFunction} next The next middleware/controller to execute
+ */
+exports.makeWorldQuery = (req, res, next) => {
+    query(db, {}, queryTypes.WORLD)
+        .then((doc) => {
+            let result = []
+            console.log(doc)
+
+            if(doc.length > 0) {
+                result = doc.map((elem) => {
+                    return {
+                        country: elem.location.country_code
+                    }
+                })
+                
+                result = result.reduce((group, elem) => {
+                    const { country } = elem;
+                    group[country] = group[country] ?? { count: 0 };
+                    group[country] = { count: group[country].count + 1 };
+                    return group;
+                  }, {});
+            }
+            res.status(200).json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(400).json({
+                error: error
+            });
+        })
+}
+
 
 /* ________________________________________________________________________________________________________________ */
 

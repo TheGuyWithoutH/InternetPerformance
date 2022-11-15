@@ -17,7 +17,8 @@ exports.queryTypes = {
     COMBINED: "combined",
     ALL: "all",
     USERID: "userId",
-    STREAMID: "streamId"
+    STREAMID: "streamId",
+    WORLD: "world"
 }
 
 /**
@@ -116,10 +117,11 @@ exports.locationQuery = (db, parameters) => {
  * @returns {Promise} A promise containing the result of the query on database
  */
 exports.query = (db, parameters, reqType) => {
-
+    
     switch (reqType) {
         case this.queryTypes.TIME:
-        case this.queryTypes.STREAMID:
+            case this.queryTypes.STREAMID:
+            case this.queryTypes.WORLD:
             return this.latencyQuery(db, parameters).then(
                 (doc) => {
                     const users = doc.map((elem) => elem.user_id)
