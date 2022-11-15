@@ -6,7 +6,7 @@
 
 const assert = require('node:assert').strict;
 const { MongoClient, MongoError } = require("mongodb");
-const Position = require('../../utils/position');
+const { config } = require('../../configs/db.config.js');
 
 /**
  * Enum of types of queries
@@ -58,7 +58,7 @@ exports.latencyQuery = async (db, parameters) => {
         query.stream_id = parameters.stream_id
     }
 
-    return _dbQuery(db, "latency", [{$match: query}, accumulator(parameters.streamId), projection])
+    return _dbQuery(db, config.latencyCollectionName, [{$match: query}, accumulator(parameters.streamId), projection])
 }
 
 
@@ -106,7 +106,7 @@ exports.locationQuery = (db, parameters) => {
         query.user_id = parameters.user_id
     }
 
-    return _dbQuery(db, "user_locations", [{$match: query}])
+    return _dbQuery(db, config.userCollectionName, [{$match: query}])
 }
 
 

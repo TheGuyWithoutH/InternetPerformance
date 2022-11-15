@@ -10,12 +10,14 @@ const { MongoClient, Db } = require("mongodb");
 /**
  * Configuration used for connecting the app to the MongoDB Server.
  */
-const config = {
-    username: 'USERNAME',
+exports.config = {
+    username: "",
     password: 'PASSWORD',
-    host: 'HOST',
-    port: 'PORT',
-    databaseName: 'DATABASE_NAME',
+    host: '127.0.0.1',
+    port: '27017',
+    databaseName: 'test_semester_project',
+    userCollectionName: 'user_locations',
+    latencyCollectionName: 'latency',
 }
 
 
@@ -27,9 +29,8 @@ const config = {
 const dbConnect = () => {
     let connString = config.username ? `mongodb://${config.username}:${config.password}@${config.host}:${config.port || 27017}/${config.databaseName}` : `mongodb://${config.host}:${config.port || 27017}/${config.databaseName}`
 
-    //return new MongoClient(connString)
-    const client = new MongoClient(`mongodb://127.0.0.1:27017`)
-    const database = client.db('test_semester_project')
+    const client = new MongoClient(connString)
+    const database = client.db(config.databaseName)
 
     database.command({ ping: 1 }).then(() => 
         console.log("Connected successfully to MongoDB")).catch(() => 
