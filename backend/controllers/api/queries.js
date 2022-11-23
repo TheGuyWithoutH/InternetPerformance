@@ -196,7 +196,7 @@ exports.makeWorldQuery = (req, res, next) => {
 const makeStats = (array) => {
     return {
         mean: stats.mean(array),
-        sd: stats.standardDeviavtion(array),
+        sd: stats.standardDeviation(array),
         quartile1: stats.Q1(array),
         median: stats.median(array),
         quartile3: stats.Q3(array),
