@@ -1,3 +1,9 @@
+/**
+ * @file Creation of the JSON file for the country to put in MongoDB with mongoimport
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 // Reading the file using default
 // fs npm package
 const fs = require("fs");
@@ -9,9 +15,6 @@ csv = fs.createReadStream("allCountries.txt")
 out = fs.createWriteStream('location_names.json', "utf8");
 
 counter = 0
-
-// Starting brackets of the file for the JSON array
-out.write("[");
  
 //List of Geoname's headers
 let headers = ["geonameid", "name", "asciiname", "alternatenames", "latitude", "longitude", "feature class", "feature code", "country code", "cc2", "admin1 code", "admin2 code", "admin3 code", "admin4 code", "population", "elevation", "dem", "timezone", "modification date"] 
@@ -39,7 +42,8 @@ const converter = new LineTransformStream( ( line ) =>
             case "longitude":
                 break
             case "latitude":
-                data_out["coordinates"] = [fields[header_select[field + 1]], fields[header_select[field]]]
+                console.log(parseInt(field)+1)
+                data_out["coordinates"] = [parseFloat(fields[header_select[field + 1]]), parseFloat(fields[header_select[field]])]
                 break
 
             //Default case for single values
@@ -51,7 +55,7 @@ const converter = new LineTransformStream( ( line ) =>
     }
 
     // Transform JS Object to a JSON
-    json_data = JSON.stringify(data_out) + ","
+    json_data = JSON.stringify(data_out)
 
     // Display progress
     if((++counter % 1000) === 0) {
@@ -64,7 +68,4 @@ const converter = new LineTransformStream( ( line ) =>
 })
 
 // connect input file via transform stream to output file
-stream = csv.pipe( converter ).pipe(out)
-
-// End of the file
-stream.on("finish", () => out.write("]"))
+stream = csv.pipe( converter).pipe(out)
