@@ -7,7 +7,6 @@
 const {Request, Response, NextFunction} = require('express')
 const assert = require('node:assert').strict;
 const {query, queryTypes} = require('../../services/api/dbQuery');
-const Position = require('../../utils/position');
 const stats = require('../../services/api/arrayStatistics')
 const { dbConnect } = require('../../configs/db.config');
 
