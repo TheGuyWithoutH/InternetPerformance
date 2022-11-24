@@ -18,7 +18,8 @@ exports.queryTypes = {
     ALL: "all",
     USERID: "userId",
     STREAMID: "streamId",
-    WORLD: "world"
+    WORLD: "world",
+    SEARCH: "search"
 }
 
 /**
@@ -109,6 +110,29 @@ exports.locationQuery = (db, parameters) => {
     return _dbQuery(db, config.userCollectionName, [{$match: query}])
 }
 
+exports.searchQuery = (db, parameters) => {
+    _checkCollectionExist(db, config.locationCollectionName);
+
+    if(!parameters.name) {
+        return new Promise((resolve, reject) => {
+            reject(new Error("Missing name parameter"))
+        })
+    }
+
+    return _dbQuery(db, config.locationCollectionName, [
+        {
+            $match: 
+            { 
+                $and: [
+                    {$text: { $search:  parameters.name }}, 
+                    {'feature class': parameters.isCity ? "P" : "A"}
+                ]
+            }
+        }, 
+        { $sort: { score: { $meta: "textScore" } } },
+        {$project: { name: 1, _id: 0 } }
+    ])
+}
 
 /**
  * Manages all the logic to perform queries of different query types.
@@ -157,6 +181,8 @@ exports.query = (db, parameters, reqType) => {
                                 return docEnd
                             })
                         })
+        case this.queryTypes.SEARCH:
+            return this.searchQuery(db, parameters)
         default:
             break;
     }

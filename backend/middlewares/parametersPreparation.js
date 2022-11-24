@@ -38,6 +38,12 @@ module.exports = (req, res, next) => {
         } else {
             req.query.latencyOnly = false
         }
+
+        if(req.query.isCity && req.query.isCity === "true") {
+            req.query.isCity = true
+        } else {
+            req.query.isCity = false
+        }
     
         next()
     } catch(error) {

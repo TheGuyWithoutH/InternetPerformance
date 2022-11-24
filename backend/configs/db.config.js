@@ -18,6 +18,7 @@ const config = {
     databaseName: 'test_semester_project',
     userCollectionName: 'user_locations',
     latencyCollectionName: 'latency',
+    locationCollectionName: 'locations',
 }
 
 

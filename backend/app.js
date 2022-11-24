@@ -21,6 +21,7 @@ app.use(function(req, res, next) {
     next();
   });
 
+// API Routes
 app.use('/api/query', queryRouter)
 app.use('/api/maps', mapRouter)
 
