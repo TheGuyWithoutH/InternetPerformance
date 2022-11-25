@@ -8,4 +8,4 @@ const clusterBackend = {
     port: 3000
 };
 
-export {clusterBackend as backendConfig};
+export {testBackendConfig as backendConfig};
