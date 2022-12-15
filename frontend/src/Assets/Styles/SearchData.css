@@ -1,0 +1,292 @@
+.search-main-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+}
+
+.search-main-header h1 {
+    width: 40%;
+    font-size: 32px;
+    text-align: center;
+}
+
+.search-main-content {
+    width: 100%;
+}
+
+
+/*------------------------------------------------*/
+/*--------------Location Search Style-------------*/
+/*------------------------------------------------*/
+.search-location-content {
+    width: 100%;
+    height: 89vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+}
+
+.search-location-filters {
+    flex: 1;
+    background-color: var(--main-grey-bg);
+    border-radius: 20px;
+    margin-right: 25px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.search-location-filters-category {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-location-filters-category h3 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.search-location-filters-category select {
+    height: 40px;
+    border: 0;
+    border-radius: 10px;
+    background-color: var(--secondary-grey-bg);
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+.search-location-filters-tip {
+    font-size: 20px;
+    margin: 100px 0;
+    text-align: center;
+}
+
+.search-location-filters-confirm {
+    height: 40px;
+    border: 0;
+    border-radius: 10px;
+    background-color: var(--secondary-grey-bg);
+    font-family: var(--main-font);
+    font-weight: 500;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.search-location-filters-confirm-icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    filter: invert(57%) sepia(21%) saturate(4016%) hue-rotate(164deg) brightness(99%) contrast(99%);
+    cursor: pointer;
+}
+
+.search-location-results {
+    flex: 4;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.search-location-results-table {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-location-results-table-entry {
+    width: 25%;
+    height: 40px;
+    background-color: var(--secondary-grey-bg);
+    border-radius: 10px;
+    padding: 0 14px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-location-results-table-entry-delete {
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: -7px;
+    top: -7px;
+    cursor: pointer;
+}
+
+.search-location-results-table-entry p {
+    font-size: 15px;
+    margin: 0;
+}
+
+.search-location-results-table-empty {
+    height: 40px;
+    width: 25%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    border: dashed 2px var(--main-grey-bg);
+    border-radius: 10px;
+}
+
+.search-location-results-table-empty p {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    margin: 0;
+    color: var(--main-grey-bg);
+}
+
+
+
+/*------------------------------------------------*/
+/*-------------Time Frame Search Style------------*/
+/*------------------------------------------------*/
+.search-time-content {
+    width: 100%;
+    height: 89vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+}
+
+.search-time-filters {
+    flex: 1;
+    background-color: var(--main-grey-bg);
+    border-radius: 20px;
+    margin-right: 25px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.search-time-filters-category {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-time-filters-category h3 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    font-weight: 500;
+}
+
+.search-time-filters-category input {
+    height: 40px;
+    border: 0;
+    border-radius: 10px;
+    background-color: var(--secondary-grey-bg);
+    font-size: 16px;
+    padding: 0 10px;
+    font-family: var(--main-font);
+}
+
+.search-time-filters-tip {
+    font-size: 20px;
+    text-align: center;
+}
+
+.search-time-filters-confirm-icon {
+    height: 100%;
+    aspect-ratio: 1/1;
+    filter: invert(57%) sepia(21%) saturate(4016%) hue-rotate(164deg) brightness(99%) contrast(99%);
+    cursor: pointer;
+}
+
+.search-time-results {
+    flex: 4;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.search-time-location-entry {
+    height: 40px;
+    margin: 10px 0;
+    background-color: var(--secondary-grey-bg);
+    border-radius: 10px;
+    padding: 0 14px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.selected {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: solid 2px var(--main-action-color);
+}
+
+.search-time-location-entry p {
+    font-size: 12px;
+    margin: 0;
+}
+
+
+
+
+
+/*------------------------------------------------*/
+/*---------------Table Search Style---------------*/
+/*------------------------------------------------*/
+.search-table-content {
+    width: 100%;
+    height: 89vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+}
+
+.search-table-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid var(--main-grey-bg);
+    border-radius: 10px;
+}
+
+.search-table-table th {
+    border: 2px solid var(--main-grey-bg);
+}
+
+.search-table-table td {
+    text-align: center;
+    border: 2px solid var(--main-grey-bg);
+    border-bottom: 2px solid var(--secondary-grey-bg);
+  }
+
+.search-table-navigation {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
