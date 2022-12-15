@@ -1,0 +1,36 @@
+.scale-overview-title {
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.scale-overview-content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+}
+
+.scale-overview-gradient {
+    width: 15px;
+    height: 100%;
+    background: linear-gradient(0deg, #0CB4FB 0%, #923FCF 100%);
+    border-radius: 15px;
+}
+
+.scale-overview-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.scale-overview-text-min {
+    margin: 0;
+}
+
+.scale-overview-text-max {
+    margin: 0;
+}

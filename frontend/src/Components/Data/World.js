@@ -10,14 +10,14 @@ const geoUrl = "/custom.geo.json";
 
 const colorScale = scaleLinear()
   .domain([0, 1000])
-  .range(["#F5F4F6", "#AA63FF"]);
+  .range(["#0CB4FB", "#933ECF"]);
 
 const World = (props) => {
   return (
     <Geographies geography={geoUrl}>
       {({ geographies }) =>
         geographies.map((geo) => 
-          <Country data={props.data} geo={geo} changeHighlight={props.changeHighlight} colorScale={colorScale} />
+          <Country data={props.data} geo={geo} changeHighlight={props.changeHighlight} colorScale={colorScale} setModal={props.setModal} />
         )
       }
     </Geographies>

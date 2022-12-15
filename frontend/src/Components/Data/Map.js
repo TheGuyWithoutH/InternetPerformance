@@ -13,10 +13,10 @@ import World from "./World";
 const geoUrl = "/custom.geo.json";
 
 const colorScale = scaleLinear()
-  .domain([0, 1000])
+  .domain([100, 1000])
   .range(["#F5F4F6", "#AA63FF"]);
 
-const Map = ({changeHighlight}) => {
+const Map = ({changeHighlight, setModal}) => {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
   const [data, setData] = useState(null);
 
@@ -33,12 +33,12 @@ const Map = ({changeHighlight}) => {
   const projection = geoMercator()
 
   function handleMoveEnd(position) {
+    console.log(position);
     if (position.coordinates[1] > -55 && position.coordinates[1] < 83 && position.coordinates[0] > -156 && position.coordinates[0] < 175) {
       setPosition(position);
     }
   }
 
-  console.log("rendering map");
 
   return (
     <div className="map">
@@ -52,7 +52,7 @@ const Map = ({changeHighlight}) => {
           translateExtent={[[-100, -200], [1100, 500]]}
           onMoveEnd={handleMoveEnd}
         >
-          {data && (<World data={data} changeHighlight={changeHighlight} />)}
+          {data && (<World data={data} changeHighlight={changeHighlight} setModal={setModal} />)}
         </ZoomableGroup>
       </ComposableMap>
     </div>
