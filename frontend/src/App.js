@@ -6,19 +6,27 @@ import {
 
 import Home from './Pages/Home'
 import DataOverview from "./Pages/DataOverview";
-import Redirect from './Components/Redirect';
+import './Assets/Styles/Globals.css'
+import Search from "./Pages/Search";
+import Papers from "./Pages/Papers";
+import About from "./Pages/About";
+import Header from "./Components/Header";
 
 
 function App() {
   return (
-    <Router>
-        <Routes>
-          <Route path="/" element={<Home/>}>
-          </Route>
-          <Route path="/data" element={<DataOverview/>}/>
-          <Route path="/about"/>
-        </Routes>
-    </Router>
+      <Router>
+        <div className='page'>
+            <Header/>
+            <Routes>
+              <Route path="/" element={<Home/>}/>
+              <Route path="/overview" element={<DataOverview/>}/>
+              <Route path="/search" element={<Search/>}/>
+              <Route path="/papers" element={<Papers/>}/>
+              <Route path="/about" element={<About/>}/>
+            </Routes>
+        </div>
+      </Router>
   );
 }
 
