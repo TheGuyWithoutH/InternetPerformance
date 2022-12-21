@@ -56,7 +56,7 @@ EXIT /B 0
     if ["$#" -eq 4] AND [ $2 = "-mode" ] AND [ $3 = $PROD ](
         docker-compose -f docker-compose.prod.yml up
     ) else if ["$#" -eq 4] && [ $2 = "-mode" ] && [ $3 = $DEV ] (
-        docker-compose up
+        docker-compose up -d
     ) else (
         echo Invalid mode. Use -mode %PROD% or -mode %DEV%
     )
