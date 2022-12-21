@@ -4,8 +4,11 @@ const testBackendConfig = {
 };
 
 const clusterBackend = {
-    url: 'https://iccluster059.iccluster.epfl.ch',
+    url: 'https://' + process.env.REACT_APP_PROD_URL,
     port: 3000
 };
 
-export {testBackendConfig as backendConfig};
+
+const currentBackendConfig = process.env.NODE_ENV === 'production' ? clusterBackend : testBackendConfig;
+
+export {currentBackendConfig as backendConfig};

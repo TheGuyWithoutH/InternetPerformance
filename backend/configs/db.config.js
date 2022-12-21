@@ -12,9 +12,9 @@ const { MongoClient, Db } = require("mongodb");
  */
 const config = {
     username: "",
-    password: 'PASSWORD',
-    host: '127.0.0.1',
-    port: '27017',
+    password: '',
+    host: process.env.MONGO_HOST || 'localhost',
+    port: process.env.MONGO_PORT || 27017,
     databaseName: 'test_semester_project',
     userCollectionName: 'user_locations',
     latencyCollectionName: 'latency',

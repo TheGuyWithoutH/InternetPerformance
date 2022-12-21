@@ -5,6 +5,7 @@
  */
 
 const express = require('express');
+const path = require('node:path');
 
 const app = express();
 
@@ -29,9 +30,11 @@ app.use(function(req, res, next) {
 app.use('/api/query', queryRouter)
 app.use('/api/maps', mapRouter)
 
-// All remaining requests return the React app, so it can handle routing.
-app.get('*', function(request, response) {
-  response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
-});
+if (process.env.NODE_ENV === 'production') {
+  // All remaining requests return the React app, so it can handle routing.
+  app.get('*', function(request, response) {
+    response.sendFile(path.join(CLIENT_BUILD_PATH, 'index.html'));
+  });
+}
 
 module.exports = app;
