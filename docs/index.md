@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Autonomous Sailboat
+title: Home
 nav_order: 1
 ---
 

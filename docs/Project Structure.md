@@ -1,7 +1,5 @@
 ---
 layout: default
 title: Autonomous Sailboat
-nav_order: 4
+nav_order: 3
 ---
-
-# API Structure
