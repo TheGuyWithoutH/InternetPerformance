@@ -12,7 +12,10 @@ To be able to run the code of the project, you will need to install the followin
 
 ### Docker and Docker Desktop
 
-![Docker Logo](https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png)
+<img src="https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png"
+     alt="Docker Logo"
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+{: .flex-justify-between}
 
 Docker is a containerization platform that allows you to run applications in a sandboxed environment. It enables you to quickly set up the project without having to install all the dependencies on your machine. You can find the installation instructions for Docker [here](https://docs.docker.com/get-docker/).
 
@@ -23,7 +26,10 @@ I also recommand you to install Docker Desktop, which is a graphical interface f
 
 ### MongoDB and MongoDB Compass
 
-![MongoDB Logo](https://www.mongodb.com/assets/images/global/leaf.png)
+<img src="https://www.mongodb.com/assets/images/global/leaf.png"
+     alt="MongoDB Logo"
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+{: .flex-justify-between}
 
 MongoDB is a NoSQL database that we use to store the data in a JSON fashion. I you want to install it, you can go [here](https://docs.mongodb.com/manual/installation/). However, thanks to Docker, you do not need to install MongoDB on your own machine. It is already included in one of the containers that you will run, and will be loaded automatically. 
 
@@ -34,7 +40,10 @@ If you want to have a graphical interface to look at the data stored in the data
 
 ### Git
 
-![Git Logo](https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png)
+<img src="https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
+     alt="Git Logo"
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+{: .flex-justify-between}
 
 Git is a version control system that we use to manage the code of the project. If you still haven't used it yet, you can find the installation instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
