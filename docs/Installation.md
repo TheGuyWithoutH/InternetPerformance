@@ -4,6 +4,79 @@ title: Installation
 nav_order: 2
 ---
 
+<style>
+    blockquote {
+        margin: 10px 0;
+        margin-block-start: 0;
+        margin-inline-start: 0;
+        padding-left: 15px;
+        border-left: 3px solid #eeebee;
+        display: block;
+        margin-block-end: 1em;
+        margin-inline-end: 40px;
+    }
+    
+    
+    p.warning, blockquote.warning {
+        background: rgba(247, 126, 126, 0.2);
+        border-left: 4px solid #dd2e2e;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 0.8rem;
+    }
+
+    blockquote.warning, blockquote.important, blockquote.note-title {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    p.note, blockquote.note {
+        background: rgba(114, 83, 237, 0.2);
+        border-left: 4px solid #381885;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 0.8rem;
+    }
+
+    p.highlight, blockquote.highlight {
+        background: rgba(255, 235, 130, 0.2);
+        border-left: 4px solid #e7af06;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 0.8rem;
+    }
+
+    p.important, blockquote.important {
+        background: rgba(44, 132, 250, 0.2);
+        border-left: 4px solid #183385;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 0.8rem;
+    }
+
+    p.note-title, blockquote.note-title {
+        background: rgba(114, 83, 237, 0.2);
+        border-left: 4px solid #381885;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+        padding: 0.8rem;
+    }
+
+    p.note-title > p:first-child, blockquote.note-title > p:first-child {
+        margin-top: 0;
+        margin-bottom: 0;
+        color: #381885;
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 0.75em;
+        padding-bottom: 0.125rem;
+    }
+</style>
+
+
+
+
 # Installation
 
 To be able to run the code of the project, you will need to install the following dependencies:
@@ -19,8 +92,8 @@ To be able to run the code of the project, you will need to install the followin
 
 Docker is a containerization platform that allows you to run applications in a sandboxed environment. It enables you to quickly set up the project without having to install all the dependencies on your machine. You can find the installation instructions for Docker [here](https://docs.docker.com/get-docker/).
 
-{: .important }
-If you are using Windows, you will need to enable the Windows Subsystem Linux 2 backend. You can find the instructions [here](https://docs.docker.com/docker-for-windows/wsl/). WSL will be useful for another step of the installation process.
+
+<blockquote class="important"><p>If you are using Windows, you will need to enable the Windows Subsystem Linux 2 backend. You can find the instructions <a href="https://docs.docker.com/docker-for-windows/wsl/">here</a>. WSL will be useful for another step of the installation process.</p></blockquote>
 
 I also recommand you to install Docker Desktop, which is a graphical interface for Docker. It will help you understand which containers are running, interract with them, see the images in use and the volumes created (if you did not understand anything, do not worry, a quick guide is in the page [project structure](./Project%20Structure.md)). You can find the installation instructions [here](https://docs.docker.com/desktop/).
 
@@ -33,8 +106,7 @@ I also recommand you to install Docker Desktop, which is a graphical interface f
 
 MongoDB is a NoSQL database that we use to store the data in a JSON fashion. I you want to install it, you can go [here](https://docs.mongodb.com/manual/installation/). However, thanks to Docker, you do not need to install MongoDB on your own machine. It is already included in one of the containers that you will run, and will be loaded automatically. 
 
-{: .note }
-If you need to look for some documentation online, note that the version of MongoDB that we use is 6.0.0.
+<p class="note">If you need to look for some documentation online, note that the version of MongoDB that we use is 6.0.0.</p>
 
 If you want to have a graphical interface to look at the data stored in the database, you can install MongoDB Compass. You can find the installation instructions [here](https://docs.mongodb.com/compass/master/install/).
 
@@ -59,8 +131,9 @@ First, you will need to clone the repository. You can do it by running the follo
 git clone git@github.com:TheGuyWithoutH/InternetPerformance.git InternetPerformance
 ```
 
-{: .note }
-Do not forget to set up your SSH keys if you have not done it yet. You can find the instructions [here](https://docs.github.com/en/authentication/connecting-to-github-with-ssh).
+<p class="note">
+    Do not forget to set up your SSH keys if you have not done it yet. You can find the instructions <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">here</a>.
+</p>
 
 ### Preparing folder for database persistence
 
@@ -94,13 +167,11 @@ Now that you have cloned the repository, installed the dependencies and set up t
 
 It will launch the project in development mode, where we execute the ReactJS application on a separate container for debugging purpose. You can also run it in production mode by replacing `-mode dev` by `-mode prod`. In this case, the ReactJS application will be built, placed and served by the NodeJS application.
 
-{: .highlight }
+<p class="highlight">
 It is possible that the first time you run the project, the NodeJS backend will fail to connect to MongoDB. The latter is creating the database and the collections in your volume, it can take a few seconds. If so, you only need to CTRL+S a file of the NodeJS application to reload the server.
+</p>
 
-{: .note-title }
-> Nodemon Server
->
-> The NodeJS application is using Nodemon to automatically reload the server when a file is modified. This is why you only need to CTRL+S a file to reload the server running in the container.
+<blockquote class="note-title"><p>Nodemon Server</p><p>The NodeJS application is using Nodemon to automatically reload the server when a file is modified. This is why you only need to CTRL+S a file to reload the server running in the container.</p></blockquote>
 
 ### Commands
 

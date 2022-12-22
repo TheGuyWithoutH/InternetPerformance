@@ -1,4 +1,23 @@
 theme: jekyll-theme-cayman
 remote_theme: just-the-docs/just-the-docs
 
+url: https://theguywithouth.github.io/InternetPerformance
+
 title: "Internet Performance"
+description: Documentation for the project
+
+callouts:
+  highlight:
+    color: yellow
+  important:
+    title: Important
+    color: blue
+  new:
+    title: New
+    color: green
+  note:
+    title: Note
+    color: purple
+  warning:
+    title: Warning
+    color: red
