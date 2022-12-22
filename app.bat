@@ -97,12 +97,12 @@ EXIT /B 0
     
     :mode_here
     IF [%3]==[%PROD%] (
-        docker-compose -f docker-compose.prod.yml up
+        docker-compose -f docker-compose.prod.yml up -d
         goto :end
     )
 
     IF [%3]==[%DEV%] (
-        docker-compose up -d
+        docker-compose up
     ) else (
         echo Invalid mode. Use -mode %PROD% or -mode %DEV%
     )

@@ -4,3 +4,4 @@
 /scripts/*.txt
 /scripts/db_*.json
 /scripts/*_names.json
+/mongodb/data

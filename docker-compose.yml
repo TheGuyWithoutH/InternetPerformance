@@ -23,12 +23,13 @@ services:
       - "8001:8001"
   mongo:
     image: "mongo:6.0"
+    user: mongodb:mongodb
     ports:
       - "27017:27017"
     logging:
       driver: none
-    # volumes:
-    #   - C:\Program Files\MongoDB\Server\6.0\data:/data/db
+    volumes:
+      - ./mongodb/data:/data/db
   client:
     build:
       context: ./frontend/
