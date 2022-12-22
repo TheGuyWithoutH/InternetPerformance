@@ -6,8 +6,11 @@
 
 const express = require('express');
 const path = require('node:path');
+const { createClient } = require('./configs/cache.config')
 
 const app = express();
+createClient()
+
 
 const queryRouter = require('./routes/api/queries')
 const mapRouter = require('./routes/api/maps')

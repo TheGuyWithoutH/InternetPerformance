@@ -12,6 +12,7 @@
   "dependencies": {
     "express": "^4.18.1",
     "mongodb": "^4.10.0",
+    "redis-om": "^0.3.6",
     "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
