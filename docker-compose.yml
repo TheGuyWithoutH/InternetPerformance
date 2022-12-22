@@ -25,6 +25,10 @@ services:
     image: "mongo:6.0"
     ports:
       - "27017:27017"
+    logging:
+      driver: none
+    # volumes:
+    #   - C:\Program Files\MongoDB\Server\6.0\data:/data/db
   client:
     build:
       context: ./frontend/
