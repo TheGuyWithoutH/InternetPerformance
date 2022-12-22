@@ -32,9 +32,9 @@ run() {
   clean
   
   echo "Running docker..."
-  if ["$#" -eq 4] && [ $2 = "-mode" ] && [ $3 = $PROD ]; then
+  if ["$#" -eq 3] && [ $2 = "-mode" ] && [ $3 = $PROD ]; then
     docker-compose -f docker-compose.prod.yml up
-  else if ["$#" -eq 4] && [ $2 = "-mode" ] && [ $3 = $DEV ]; then
+  else if ["$#" -eq 3] && [ $2 = "-mode" ] && [ $3 = $DEV ]; then
     docker-compose up -d
   else
     echo "Invalid mode. Use -mode $PROD or -mode $DEV"
