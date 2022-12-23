@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Autonomous Sailboat
+title: API Guide
 nav_order: 4
 ---
 
