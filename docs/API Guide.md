@@ -76,9 +76,13 @@ nav_order: 4
 
 # API Structure
 
-The NodeJS backend exposes a API endpoints to retrieve data from the dataset. It has been built to support both full parameter searches for external clients and optimized worflow of the website. Here you will find the different endpoints of the API, how to use them and what type of JSON they return.
+The NodeJS backend exposes API endpoints to retrieve data from the dataset. It has been built to support both full parameter searches for external clients (endpoints `/api/query`) and optimized worflow of the website (endpoints `api/services`). Here you will find the different endpoints of the API, how to use them and what type of JSON they return.
 
 ## Types
+
+Some of the types described below might be ambiguous, so here is a quick reminder of the conventions we use in this project.
+
+<br>
 
 #### Coordinates
 According to GeoJSON standards used in MongoDB, the coordinates must be specified via an array of floats :
@@ -109,6 +113,8 @@ As we use MongoDB as database system, we use the default `_id` field to identify
 <br>
 
 ## 1. Geographic Queries
+
+#### Endpoint : `/api/query/spatial`
 
 ### Request
 
@@ -182,6 +188,8 @@ Options for the response :
 
 ## 2. Time Queries
 
+#### Endpoint : `/api/query/time`
+
 ### Request
 
 Arguments for the request :
@@ -254,6 +262,8 @@ Options for the response :
 
 ### User Request
 
+#### Endpoint : `/api/query/user`
+
 Arguments for the request :
 
 - **`id`** (Int) : user id of the requested user, no default.
@@ -298,6 +308,8 @@ Options for the response :
 
 ### Stream Request
 
+#### Endpoint : `/api/query/stream`
+
 Arguments for the request :
 
 - **`id`** (Int) : stream id of the requested stream, no default.
@@ -341,6 +353,8 @@ Options for the response :
 <br>
 
 ## 4. Time Frame Query
+
+#### Endpoint : `/api/services/timeframe`
 
 Arguments for the request :
 
@@ -394,6 +408,8 @@ Arguments for the request :
 <br>
 
 ## 5. Table Query
+
+#### Endpoint : `/api/services/table`
 
 Arguments for the request :
 
