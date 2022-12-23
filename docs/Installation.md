@@ -87,7 +87,7 @@ To be able to run the code of the project, you will need to install the followin
 
 <img src="https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png"
      alt="Docker Logo"
-     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto; max-width: 60%" /> 
 {: .flex-justify-between}
 
 Docker is a containerization platform that allows you to run applications in a sandboxed environment. It enables you to quickly set up the project without having to install all the dependencies on your machine. You can find the installation instructions for Docker [here](https://docs.docker.com/get-docker/).
