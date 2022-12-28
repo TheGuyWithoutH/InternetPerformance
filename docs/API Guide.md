@@ -84,8 +84,8 @@ Some of the types described below might be ambiguous, so here is a quick reminde
 
 <br>
 
-#### Coordinates
-According to GeoJSON standards used in MongoDB, the coordinates must be specified via an array of floats :
+#### **Coordinates**
+According to GeoJSON standards used in MongoDB, the **coordinates** must be specified via an **array of floats** :
 
 ```json
 <field>: [<longitude>, <latitude> ]
@@ -96,19 +96,19 @@ Valid latitude values are between `-90` and `90`, both inclusive.
 
 <br>
 
-#### Timestamp
+#### **Timestamp**
 
 The time metrics we use in this project are the **timestamps** or namely the **Unix epoch** (or Unix time or POSIX time or Unix timestamp). It is the number of seconds that have elapsed since January 1, 1970 (midnight UTC/GMT), not counting leap seconds (in ISO 8601: 1970-01-01T00:00:00Z). The value is stored in an **`Integer`** field.
 
 <blockquote class="warning">
-    <p>Using time can be tricky sometimes as javascript `Date` represents *local time*. We thus need to make sure to first convert the date to UTC time zone to get the right requested date. <br> If at some point this convention needs to be changed, do not forget to adapt the module `utils/parseDate.js` in the backend.</p>
+    <p>Using time can be tricky sometimes as javascript <code>Date</code> represents *local time*. We thus need to make sure to first convert the date to UTC time zone to get the right requested date. <br> If at some point this convention needs to be changed, do not forget to adapt the module <code>utils/parseDate.js</code> in the backend.</p>
 </blockquote>
 
 <br>
 
-#### IDs
+#### **IDs**
 
-As we use MongoDB as database system, we use the default `_id` field to identify each document. It is a 12-byte value represented by a *24-character hexadecimal `string`*. It's uniqueness for each document enables us to query for a specific document, and help link multiple databases together - as a foreign key field would do in SQL -.
+As we use MongoDB as database system, we use the default `_id` field to identify each document. It is a **12-byte value** represented by a *24-character hexadecimal `string`*. It's uniqueness for each document enables us to query for a specific document, and help link multiple databases together - as a foreign key field would do in SQL -.
 
 <br>
 
@@ -128,7 +128,7 @@ Arguments for the request :
 - **`county`** (String) : the county of the requests wanted, no default.
 - **`city`** (String) : the city of the requests wanted, no default.
 
-=> Can be combined with time queries
+&rarr; Can be combined with time queries
 
 The good practice with these arguments is to either use coordinates or geographic places.
 
@@ -143,44 +143,44 @@ Options for the response :
 
 ```json
 {
-		"stats": {
-				"mean": FLOAT,
-				"sd": FLOAT,
-				"quartile1": INTEGER,
-				"median": INTEGER,
-				"quartile3": INTEGER,
-				"10%": INTEGER,
-				"90%": INTEGER,
-				"99%: INTEGER
+	"stats": {
+		"mean": FLOAT,
+		"sd": FLOAT,
+		"quartile1": INTEGER,
+		"median": INTEGER,
+		"quartile3": INTEGER,
+		"10%": INTEGER,
+		"90%": INTEGER,
+		"99%: INTEGER
+	},
+	"users": {
+		"user_id1": {
+			"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
+			"location": {
+				"coordinates": [FLOAT, FLOAT],
+				"country": STRING,
+				"country_code": ISO2_STRING,
+				"region": STRING,
+				"county": STRING,
+				"city": STRING
+			}
 		},
-		"users": {
-				"user_id1": {
-						"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
-						"location": {
-								"coordinates": [FLOAT, FLOAT],
-								"country": STRING,
-								"country_code": ISO2_STRING,
-								"region": STRING,
-								"county": STRING,
-								"city": STRING
-						}
-				},
-				...,
-				"user_id1": {
-						"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
-						"location": {
-								"coordinates": [FLOAT, FLOAT],
-								"country": STRING,
-								"country_code": ISO2_STRING,
-								"region": STRING,
-								"county": STRING,
-								"city": STRING
-						}
-				}
-		},
-		/*      **For** *latency-only* **mode**
-		"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
-		*/
+		...,
+		"user_id1": {
+			"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
+			"location": {
+				"coordinates": [FLOAT, FLOAT],
+				"country": STRING,
+				"country_code": ISO2_STRING,
+				"region": STRING,
+				"county": STRING,
+				"city": STRING
+			}
+		}
+	},
+	/*      **For** *latency-only* **mode**
+	"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
+	*/
 }
 ```
 
@@ -203,7 +203,7 @@ Arguments for the request :
 - **`from`** (String) : retrieve latencies starting from this date, default at `0`, format for the string is `yyyy-mm-dd`.
 - **`to`** (String) : retrieve latencies until this date, default at `∞`, format for the string is `yyyy-mm-dd`.
 
-=> Can be combined with spatial queries
+&rarr; Can be combined with spatial queries
 
 Options for the response :
 
@@ -216,43 +216,43 @@ Options for the response :
 
 ```json
 {
-		"stats": {
-				"mean": FLOAT,
-				"sd": FLOAT,
-				"quartile1": INTEGER,
-				"median": INTEGER,
-				"quartile3": INTEGER,
-				"10%": INTEGER,
-				"90%": INTEGER
+	"stats": {
+		"mean": FLOAT,
+		"sd": FLOAT,
+		"quartile1": INTEGER,
+		"median": INTEGER,
+		"quartile3": INTEGER,
+		"10%": INTEGER,
+		"90%": INTEGER
+	},
+	"users": {
+		"user_id1": {
+			"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
+			"location": {
+				"coordinates": [FLOAT, FLOAT],
+				"country": STRING,
+				"country_code": ISO2_STRING,
+				"region": STRING,
+				"county": STRING,
+				"city": STRING
+			}
 		},
-		"users": {
-				"user_id1": {
-						"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
-						"location": {
-								"coordinates": [FLOAT, FLOAT],
-								"country": STRING,
-								"country_code": ISO2_STRING,
-								"region": STRING,
-								"county": STRING,
-								"city": STRING
-						}
-				},
-				...,
-				"user_idn": {
-						"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
-						"location": {
-								"coordinates": [FLOAT, FLOAT],
-								"country": STRING,
-								"country_code": ISO2_STRING,
-								"region": STRING,
-								"county": STRING,
-								"city": STRING
-						}
-				}
-		},
-		/*      **For** *latency-only* **mode**
-		"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
-		*/
+		...,
+		"user_idn": {
+			"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
+			"location": {
+				"coordinates": [FLOAT, FLOAT],
+				"country": STRING,
+				"country_code": ISO2_STRING,
+				"region": STRING,
+				"county": STRING,
+				"city": STRING
+			}
+		}
+	},
+	/*      **For** *latency-only* **mode**
+	"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
+	*/
 }
 ```
 
@@ -277,30 +277,30 @@ Options for the response :
 
 ```json
 {
-		"stats": {
-				"mean": FLOAT,
-				"sd": FLOAT,
-				"quartile1": INTEGER,
-				"median": INTEGER,
-				"quartile3": INTEGER,
-				"10%": INTEGER,
-				"90%": INTEGER
-		},
-		"user": {
-				"user_id": user_id,
-				"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
-				"location": {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				}
+	"stats": {
+		"mean": FLOAT,
+		"sd": FLOAT,
+		"quartile1": INTEGER,
+		"median": INTEGER,
+		"quartile3": INTEGER,
+		"10%": INTEGER,
+		"90%": INTEGER
+	},
+	"user": {
+		"user_id": user_id,
+		"latencies": [(TIMESTAMP, latency1 /*, stream_id1 */), ..., (TIMESTAMP, latencyN /*, stream_idN */)],
+		"location": {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
 		}
-		/*      **For** *latency-only* **mode**
-		"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
-		*/
+	}
+	/*      **For** *latency-only* **mode**
+	"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)]
+	*/
 }
 ```
 
@@ -322,31 +322,31 @@ Options for the response :
 
 ```json
 {
-		"stats": {
-				"mean": FLOAT,
-				"sd": FLOAT,
-				"quartile1": INTEGER,
-				"median": INTEGER,
-				"quartile3": INTEGER,
-				"10%": INTEGER,
-				"90%": INTEGER
-		},
-		"stream": {
-				"stream_id": stream_id,
-				"user_id": user_id,
-				"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)],
-				"location": {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				}
+	"stats": {
+		"mean": FLOAT,
+		"sd": FLOAT,
+		"quartile1": INTEGER,
+		"median": INTEGER,
+		"quartile3": INTEGER,
+		"10%": INTEGER,
+		"90%": INTEGER
+	},
+	"stream": {
+		"stream_id": stream_id,
+		"user_id": user_id,
+		"latencies": [(TIMESTAMP, latency1), ..., (TIMESTAMP, latencyN)],
+		"location": {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
 		}
-		/*      **For** *latency-only* **mode**
-		"latencies": [(time1, latency1), ..., (timeN, latencyN)]
-		*/
+	}
+	/*      **For** *latency-only* **mode**
+	"latencies": [(time1, latency1), ..., (timeN, latencyN)]
+	*/
 }
 ```
 
@@ -374,34 +374,34 @@ Arguments for the request :
 
 ```json
 [
-		{
-				"from": TIMESTAMP,
-				"to": TIMESTAMP,
-				"user_count": INTEGER,
-				"latency_count": INTEGER,
-				"location": {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				}
-		},
-		{
-				"from": TIMESTAMP,
-				"to": TIMESTAMP,
-				"user_count": INTEGER,
-				"latency_count": INTEGER,
-				"location": {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				}
-		},
+	{
+		"from": TIMESTAMP,
+		"to": TIMESTAMP,
+		"user_count": INTEGER,
+		"latency_count": INTEGER,
+		"location": {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
+		}
+	},
+	{
+		"from": TIMESTAMP,
+		"to": TIMESTAMP,
+		"user_count": INTEGER,
+		"latency_count": INTEGER,
+		"location": {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
+		}
+	},
 ]
 ```
 
@@ -432,34 +432,34 @@ Arguments for the request :
 
 ```json
 [
-		{
-				"user_id": ID,
-				"stream_id": ID,
-				"location":  {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				},
-				"latency": INTEGER,
-				"timestamp": TIMESTAMP
+	{
+		"user_id": ID,
+		"stream_id": ID,
+		"location":  {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
 		},
-		{
-				"user_id": ID,
-				"stream_id": ID,
-				"location":  {
-						"coordinates": [FLOAT, FLOAT],
-							"country": STRING,
-							"country_code": ISO2_STRING,
-							"region": STRING,
-							"county": STRING,
-							"city": STRING
-				},
-				"latency": INTEGER,
-				"timestamp": TIMESTAMP
+		"latency": INTEGER,
+		"timestamp": TIMESTAMP
+	},
+	{
+		"user_id": ID,
+		"stream_id": ID,
+		"location":  {
+			"coordinates": [FLOAT, FLOAT],
+			"country": STRING,
+			"country_code": ISO2_STRING,
+			"region": STRING,
+			"county": STRING,
+			"city": STRING
 		},
+		"latency": INTEGER,
+		"timestamp": TIMESTAMP
+	},
 ]
 ```
 

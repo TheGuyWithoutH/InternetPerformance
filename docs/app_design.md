@@ -1,6 +1,6 @@
 ---
 layout: default
-title: App Design
+title: Application User Interface
 nav_order: 5
 ---
 
@@ -74,11 +74,11 @@ nav_order: 5
     }
 </style>
 
-# App Design
+# Application UI Design
 
-In order to have a clear idea of the frontend design, here you can find the main features of the app as well as the style guide for the CSS.
+In order to have a clear idea of the frontend app design, here are the main features with explanation details and designs, as well as a style guide to properly use CSS rules.
 
-For detailed guidelines about the design of the web app, you can find [here](https://www.figma.com/file/dw9atzxHUTL7LCi7pvZbfk/Internet-Performance?node-id=0%3A1&t=FHvAOG1furo4LWgo-1) the Figma mock up of the app. In case you want to modify it, you can contact [Ugo Balduci](mailto:ugo.balducci@epfl.ch) to get access to the Figma project.
+For detailed guidelines about the graphical design of the web app, you can find [here](https://www.figma.com/file/dw9atzxHUTL7LCi7pvZbfk/Internet-Performance?node-id=0%3A1&t=FHvAOG1furo4LWgo-1) the Figma mock up of the app. In case you want to modify it, you can contact [Ugo Balduci](mailto:ugo.balducci@epfl.ch) to get access to the Figma project.
 
 ## Overview
 
@@ -89,6 +89,8 @@ Apart from the home screen, the app is divided into 4 main sections :
 - **Papers** : a list of the papers from the study.
 - **About** : the screen where the user can find information about the app and the legal information.
 
+## Page Design
+
 ### Home Screen
 
 <br>
@@ -96,55 +98,78 @@ Apart from the home screen, the app is divided into 4 main sections :
      alt="Home Design"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
+<br>
 
-The content of the home screen is not defined yet, as well as its precise purpose. As of now, the main idea behind it is to explain the project and show the contributors.
+The content of the **home screen** is not defined yet, as well as its precise purpose. As of now, the main idea behind this screen is to explain the project and show the contributors.
 
 <blockquote class="highlight-title">
-<p>TODO</p>
+<p>TO DO</p>
 <p>
-Define the content of the home screen and its purpose.
+<ul>
+    <li>Define the content of the home screen and its purpose.</li>
+    <li>Implement Home screen components in <code>Components/Home/</code> or directly in <code>Pages/Home.js</code>.</li>
+</ul>
 </p></blockquote>
 
 
-### Overview
+### Overview Screen
 <br>
 <img src="./img/WorldOverview.svg"
      alt="Overview Design"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
-
-The overview screen is a first glance at datapoints in the dataset. It helps understanding the distribution of the data and the main trends of latency performance for each country. Indeed, the user can select a country and see the distribution of the latency performance over the last year, as well as some information about the country to contextualize data. Here is an example of the overview screen for Switzerland :
-
 <br>
+
+The overview screen is a first glance at datapoints in the dataset. It helps understanding the distribution of the data and the main trends of latency performance for each country. Indeed, the user can select a country and see the distribution of the latency performance over the last year, as well as some information about the country to contextualize data. Here is an example of the overview pop-up for Switzerland :
+
 
 <img src="./img/CountryOverview.svg"
      alt="Overview Design"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
+<br>
+
 <blockquote class="highlight-title">
-<p>TODO</p>
-<p>
-Define which diagram to display and add them to the component `Components/Data/CountryModal.js`.
-</p></blockquote>
+<p>TO DO</p>
+<ul>
+    <li>Define which diagrams to display and add them to the component <code>Components/Data/CountryModal.js</code>.</li>
+    <li>Link country information to the backend.</li>
+    <li>Find a way to dysplay the country shape or an equivalent.</li>
+</ul></blockquote>
 
 ### Search Data
+
+In order to retrieve the desired data and generate his diagrams, a user has to go through the following 4 steps:
+
+#### 1. Choose location
+
+The first step to retrieve data is to **choose the location**. The user can select a country, a region and a city. The selection is done by clicking on the corresponding input that already contains possible choices (i.e. there only are regions of the selected country in the field *region*). 
+The user can also search for a specific location by clicking on the map. A pin will then be displayed, as well as a round area whose default radius of 1km can be changed by dragging and dropping the perimeter of the area. 
+The map is interactive and allows the user to zoom in and out (currently, the map used is `@react-google-maps/api`). Once the location is selected, the user can press `Add this location` and the desired location will be added to the list of locations at the bottom. The user can then add up to 3 locations. Once he is done, he can press the `Next` button to go to the next step.
 <br>
 <img src="./img/Choose Location Search.svg"
      alt="Search Design : Choose location"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
+
+
+#### 2. Choose time
 <br>
 <img src="./img/Choose Time Search.svg"
      alt="Search Design : Choose time"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 <br>
+
+#### 3. Table view
 <img src="./img/Data Table Search.svg"
      alt="Search Design : Data table"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 <br>
+
+#### 4. Choose diagram
 <img src="./img/Choose Diagram Search.svg"
      alt="Search Design : Choose diagram"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
@@ -166,3 +191,7 @@ Define which diagram to display and add them to the component `Components/Data/C
 
 
 ## Style Guide
+
+### Reusable Components
+
+### Main CSS Rules

@@ -167,7 +167,7 @@ Now that you have cloned the repository, installed the dependencies and set up t
 
 It will launch the project in development mode, where we execute the ReactJS application on a separate container for debugging purpose. You can also run it in production mode by replacing `-mode dev` by `-mode prod`. In this case, the ReactJS application will be built, placed and served by the NodeJS application.
 
-<p class="highlight">
+<p class="warning">
 It is possible that the first time you run the project, the NodeJS backend will fail to connect to MongoDB. The latter is creating the database and the collections in your volume, it can take a few seconds. If so, you only need to CTRL+S a file of the NodeJS application to reload the server.
 </p>
 
