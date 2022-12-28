@@ -23,50 +23,50 @@ Apart from the home screen, the app is divided into 4 main sections :
 
 <img src="./img/Home.svg"
      alt="Home Design"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 ### Overview
 
 <img src="./img/WorldOverview.svg"
      alt="Overview Design"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 ### Search Data
 
 <img src="./img/Choose Location Search.svg"
      alt="Search Design : Choose location"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 <img src="./img/Choose Time Search.svg"
      alt="Search Design : Choose time"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 <img src="./img/Data Table Search.svg"
      alt="Search Design : Data table"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 <img src="./img/Choose Diagram Search.svg"
      alt="Search Design : Choose diagram"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 ### Papers
 
 <img src="./img/Papers.svg"
      alt="Papers Design"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 ### About
 
 <img src="./img/Papers.svg"
      alt="About Design"
-     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 0px 4px 17px 2px rgba(0, 0, 0, 0.25);" /> 
+     style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
 
