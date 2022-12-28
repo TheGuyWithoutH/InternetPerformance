@@ -135,6 +135,14 @@ git clone git@github.com:TheGuyWithoutH/InternetPerformance.git InternetPerforma
     Do not forget to set up your SSH keys if you have not done it yet. You can find the instructions <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh">here</a>.
 </p>
 
+### Installing the modules
+
+This project uses NodeJS and NPM to manage the dependencies. You will need to install the dependencies of the project by running the following command in your terminal in both ``backend`` and ``frontend`` folders:
+
+```bash
+npm install
+```
+
 ### Preparing folder for database persistence
 
 The database is stored in a volume, which means that it is not deleted when you stop the container. There is therefore in the repository a folder called `mongodb/data` that will be used to store the data of the database. You will however need to change the permissions of this folder so that mongodb's container can write on it.

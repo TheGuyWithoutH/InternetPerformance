@@ -135,7 +135,7 @@ The overview screen is a first glance at datapoints in the dataset. It helps und
 <ul>
     <li>Define which diagrams to display and add them to the component <code>Components/Data/CountryModal.js</code>.</li>
     <li>Link country information to the backend.</li>
-    <li>Find a way to dysplay the country shape or an equivalent.</li>
+    <li>Find a way to display the country shape or an equivalent.</li>
 </ul></blockquote>
 
 ### Search Data
@@ -143,7 +143,8 @@ The overview screen is a first glance at datapoints in the dataset. It helps und
 In order to retrieve the desired data and generate his diagrams, a user has to go through the following 4 steps:
 
 #### 1. Choose location
-<br>
+
+
 The first step to retrieve data is to **choose the location**. The user can select a country, a region and a city. The selection is done by clicking on the corresponding input that already contains possible choices (i.e. there only are regions of the selected country in the field *region*). 
 
 The user can also search for a specific location by clicking on the map. A pin will then be displayed, as well as a round area whose default radius of 1km can be changed by dragging and dropping the perimeter of the area. 
@@ -156,45 +157,134 @@ The map is interactive and allows the user to zoom in and out (currently, the ma
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
+<br>
+
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>Implement the area features when clicking on the google map, and get the position and radius.</li>
+    <li>Link countries, regions and cities information to the backend.</li>
+    <li>Implement add location feature when the user click on the corresponding button.</li>
+</ul></blockquote>
 
 #### 2. Choose time
+
+
+The second step is to **choose the time**. The user can select a time range by clicking on the corresponding input to fill out the starting date and time of the range and its ending. The default time range is `all`, from timestamp 0 to the actual time. The user can also select a specific time range by dragging and dropping the slider at the bottom of the screen. The latter allows the user to visually adjust the time frame he wants, given the indications of user counts/data points provided for each location at a given time. Once he is done, he can press the `Next` button to go to the next step.
+
 <br>
 <img src="./img/Choose Time Search.svg"
      alt="Search Design : Choose time"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
+
 <br>
 
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>Make histograms for each location the user selected.</li>
+    <li>Link histograms to backend.</li>
+    <li>Find a way to implement the slider - my proposal would be to slide the left corner left to make the start date go down and right to make it go up (same for the right corner and end date) -.</li>
+    <li>Find a way to properly subdivide time slots for the histograms to have no more than 40 bars and not less than 25 bars (the minimum granularity for our time is 15s, so block the slider when reaching this limit).</li>
+</ul></blockquote>
+
 #### 3. Table view
+
+
+In this tab, the user will be able to see a table of the data he selected. The table is interactive and allows the user to sort the data by clicking on the column he wants to sort. The user can also select/unselect a specific data point by clicking on its tick box. This feature aims to give a first sight to the selected data and let the user focus on a particular subset of it like an interesting user, or a stream, or only scattered chosen data points. Once he is done, he can press the `Next` button to go to the next step.
+
+<br>
 <img src="./img/Data Table Search.svg"
      alt="Search Design : Data table"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
+
 <br>
 
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>Link table to the backend, with a page mechanism to display part of the results at once.</li>
+    <li>Make an unselect all feature.</li>
+    <li>Make a sorting per column value feature.</li>
+</ul></blockquote>
+
 #### 4. Choose diagram
+
+
+For this last step, the user can choose the diagram he wants amongst the proposed ones. The user can select a diagram by clicking on the corresponding box that already contains displays a preview. This will automatically download it in a picture format (*still to define*). If one wants to get raw JSON data, there also is a possibility to download them.
+
+<br>
 <img src="./img/Choose Diagram Search.svg"
      alt="Search Design : Choose diagram"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
+<br>
+
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>Determine which diagram to propose.</li>
+    <li>Determine the download file format for diagrams.</li>
+    <li>Implement diagram creation and download from JSObject data.</li>
+</ul></blockquote>
+
 ### Papers
+
+
+The papers screen is a page that will display the papers that are related to the study. The papers will be displayed in a list, with a preview of the abstract and a link to the full paper.
+
 <br>
 <img src="./img/Papers.svg"
      alt="Papers Design"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
+<br>
+
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>If any paper to display, add it to the page using the <code>Components/Papers/PaperCard.js</code> component.</li>
+</ul></blockquote>
+
 ### About
+
+
+The about page will display information about the study, the team, the project, and legal mentions. It will also display the contact information of the team. The exact details are however still to be defined.
+
 <br>
 <img src="./img/Papers.svg"
      alt="About Design"
      style="display: block; height: auto; width: auto; margin: auto; max-width: 80%; box-shadow: 3px 3px 11px 0px rgb(0 0 0 / 25%); border-radius: 10px;" /> 
 {: .flex-justify-between}
 
+<br>
+
+<blockquote class="highlight-title">
+<p>TO DO</p>
+<ul>
+    <li>Define all needed information.</li>
+    <li>Fill in the given page template.</li>
+</ul></blockquote>
 
 ## Style Guide
 
 ### Reusable Components
+
+ReactJS philosophy is to create reusable components. This is why we have created a set of reusable components that can be used in any page of the website. These components are located in the `Components` folder. The components are:
+- a ``DynamicButton`` that helps to create buttons that can be used in any page of the website. It is located in the `Components/DynamicButton.js` file.
+- a ``Header`` that helps to create a header that can be used in any page of the website. It is located in the `Components/Header.js` file.
+- a ``Logo`` that helps to create a logo that can be used in any page of the website (but already imported in ``Header`` so no need to add it again). It is located in the `Components/Logo.js` file.
+- a ``Redirect`` component that helps to create a page that redirects to another page of the website. It is located in the `Components/Redirect.js` file.
+
+This set of global components can be extended. Whenever you add a new feature, do not hesitate to decompose your UI into semantic modules and create reusable components for them, it will help people understand your code. If the feature you implement is more related to a specific page, please put your component in the corresponding `Components` subfolder of the page you are working on :
+- ``Components/Home`` for the home page
+- ``Components/Data`` for the overview page
+- ``Components/Search`` for the search page
+- ``Components/Papers`` for the papers page
+- ``Components/About`` for the about page
 
 ### Main CSS Rules
