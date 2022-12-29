@@ -91,7 +91,7 @@ Let's get started! First go to [Installation](Installation.md) to install and ru
 
 
 <blockquote class="important"><p>
-In some sections of this documentation, to indicate what is in progress or not started yet, you will find TO DO callouts like this one:
+In some sections of this documentation, to indicate what is in progress or not started yet, you will find <strong>TO DO</strong> callouts like this one:
 <blockquote class="highlight-title">
 <p>TO DO</p>
 <ul>
