@@ -15,10 +15,10 @@ nav_order: 3
 
 The MongoDB container is used to host the database. It is a container that is not exposed to the outside world, and is only accessible from other containers or the host computer on port 27017. Data is stored in a JSON fashion (BSON to be precise). 
 
-The database, named ``____`` contains the following collections:
-- ``____``: the collection of users and their location
-- ``____``: the collection of latencies fetched from twitch. This is a time series collection, which means that the data is stored in a specific format to allow for efficient queries on time series data.
-- ``____``: the collection of geographical places. It helps preprocessing the data to make it easier to query.
+The database, named ``internet_performance`` contains the following collections:
+- ``users``: the collection of users and their location
+- ``latencies``: the collection of latencies fetched from twitch. This is a time series collection, which means that the data is stored in a specific format to allow for efficient queries on time series data.
+- ``locations``: the collection of geographical places. It helps preprocessing the data to make it easier to query.
 <br>
 
 #### Redis Container

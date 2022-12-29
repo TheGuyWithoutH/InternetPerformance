@@ -6,6 +6,8 @@ url: https://theguywithouth.github.io/InternetPerformance
 title: "Internet Performance"
 description: Documentation for the project
 
+logo: "/img/logo.png"
+
 callouts:
   highlight:
     color: yellow
