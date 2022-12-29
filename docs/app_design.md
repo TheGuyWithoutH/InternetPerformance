@@ -274,7 +274,7 @@ The about page will display information about the study, the team, the project, 
 
 ### Reusable Components
 
-ReactJS philosophy is to create reusable components. This is why we have created a set of reusable components that can be used in any page of the website. These components are located in the `Components` folder. The components are:
+ReactJS philosophy is to create **reusable components**. This is why we have created a set of reusable components that can be used in any page of the website. These components are located in the `Components` folder. The components are:
 - a ``DynamicButton`` that helps to create buttons that can be used in any page of the website. It is located in the `Components/DynamicButton.js` file.
 - a ``Header`` that helps to create a header that can be used in any page of the website. It is located in the `Components/Header.js` file.
 - a ``Logo`` that helps to create a logo that can be used in any page of the website (but already imported in ``Header`` so no need to add it again). It is located in the `Components/Logo.js` file.
@@ -288,3 +288,37 @@ This set of global components can be extended. Whenever you add a new feature, d
 - ``Components/About`` for the about page
 
 ### Main CSS Rules
+
+#### Naming convention
+
+We use a variant of the BEM naming convention for our CSS classes. It is a naming convention that helps to avoid conflicts between CSS classes and to make the code more readable. It is based on the following rule: the name is a combination of the name of the page and the name of the semantic unit and subunits along with modifier properties, all separated by a hyphen. 
+
+For example, the name of the class of the delete button of an entry in the selected location subdivision table of the search page is ``search-location-results-table-entry-delete``. It is composed of the name of the page ``search``, the name of the semantic unit ``location-results-table``, the name of the subunits ``entry-button``.<br>Another example is the name of the class of an empty entry in the selected location subdivision table of the search page. It is ``search-location-results-table-empty``. It is composed of the name of the page ``search``, the name of the semantic unit ``location-results-table``, and the modifier property ``empty``.
+
+<p class="note">
+    This convention is not mandatory, but it is highly recommended to use it to avoid conflicts between CSS classes and to make the code more readable. But as this convention was used on the go, it is not always fully consistent or greatly implemented. Feel free to improve it.
+</p>
+
+#### CSS styles
+
+The main guidelines for the CSS styles are:
+
+- Colors : the color theme is defined in ``index.css``. You can access them from any css file using the ``var()`` function. For example, to access the main action color, you can use ``var(--main-action-color)``. The colors are:
+    - The ``--main-action-color`` is the main call to action color of the website. It is used for the main action buttons, the main action links, and the main action icons... It also helps highlight some content.
+    - The ``--secondary-action-color`` is the secondary call to action color of the website. It is used for the secondary action buttons, the secondary action links, and the secondary action icons... It also helps highlight some content.
+    - The ``--main-text-color`` is the main text color of the website. It is used for the main text of the website.
+    - The ``--main-dark-color`` is another shade of the action color that can be useful for contrast matters.
+    - The ``--main-grey-bg`` is the color for soft backgrounds like inputs and small items.
+    - The ``--secondary-grey-bg`` is the color for strong division background like a inputs container on the left side.
+
+- Fonts : the font is defined in ``index.css`` with the variable ``--main-font``. It is already applied to the entire website.
+
+- Positionning : the positionning is done using the flexbox model. It might however need to be improved in case a better responsive design is needed.
+
+- Border radius : the border radius is frequently used in the website (rounded corner). Its value is generally comprised between 10px and 20px depending on the size of the component. I recommend any division of the page to have a border radius.
+
+- Shadows : the shadows are used to give a 3D effect to the components and/or detach them from the background like in the case of a pop-up. It is generally used for huge components in the page that need to be detached from the white background. The value of the shadow is ``0px 4px 17px 2px rgba(0, 0, 0, 0.25)``.
+
+&rarr; For more details on the CSS styles, please refer to the Figma mockup by clicking on the ``Inspect`` tab at the top right corner for more information on the selected component.
+
+

@@ -1,5 +1,5 @@
 ---
 layout: default
-title: Autonomous Sailboat
+title: Project Structure
 nav_order: 3
 ---
