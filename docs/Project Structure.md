@@ -9,6 +9,7 @@ nav_order: 3
 ## Main Modules
 <br>
 ![Project Structure](/img/schema1.png)
+<br>
 
 #### MongoDB Container
 
@@ -18,10 +19,12 @@ The database, named ``____`` contains the following collections:
 - ``____``: the collection of users and their location
 - ``____``: the collection of latencies fetched from twitch. This is a time series collection, which means that the data is stored in a specific format to allow for efficient queries on time series data.
 - ``____``: the collection of geographical places. It helps preprocessing the data to make it easier to query.
+<br>
 
 #### Redis Container
 
 The Redis container is used to store query results for caching. It is a container that is not exposed to the outside world, and is only accessible from other containers on port 6379 or the host computer on port 8000. Data is stored in a key-value fashion.
+<br>
 
 #### Node.js Container
 
@@ -32,12 +35,14 @@ In the development folder, we however have two seperate folders for the backend 
 ### Development Variant
 <br>
 ![Project Structure](/img/schema2.png)
+<br>
 
 #### Node.js Container
 
 When running the project in development mode using the command `./app run -mode dev`, the Node.js container is only used to serve the API endpoints. The ``client`` subfolder of the backend is thus empty and the React application is served by a separate container. To access the React application, you will need to go to ``localhost:3001``. You can also access the API endpoints at ``localhost:3000`` for testing purposes.
 
 Any time you make a change in the Node.js code, you won't need to restart the container to see the changes thanks to NodemonJS. You just have to save the file and the changes will be applied automatically.
+<br>
 
 #### React Container
 
