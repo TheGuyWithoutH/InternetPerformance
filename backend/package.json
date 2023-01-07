@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --silent=false",
     "start": "nodemon server",
-    "perf": "node tests/api.perf.js"
+    "performance": "node tests/api.performance.js"
   },
   "author": "",
   "license": "ISC",
