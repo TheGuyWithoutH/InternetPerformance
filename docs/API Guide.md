@@ -367,6 +367,7 @@ Arguments for the request :
 - **`city`** (String) : the city of the requests wanted, no default.
 - **`from`** (Int) : retrieve latencies starting from this timestamp, default at `0`.
 - **`to`** (Int) : retrieve latencies until this timestamp, default at `∞`.
+- **`frame`** (Int) : number of seconds per frame
 
 <br>
 
@@ -378,29 +379,13 @@ Arguments for the request :
 		"from": TIMESTAMP,
 		"to": TIMESTAMP,
 		"user_count": INTEGER,
-		"latency_count": INTEGER,
-		"location": {
-			"coordinates": [FLOAT, FLOAT],
-			"country": STRING,
-			"country_code": ISO2_STRING,
-			"region": STRING,
-			"county": STRING,
-			"city": STRING
-		}
+		"latency_count": INTEGER
 	},
 	{
 		"from": TIMESTAMP,
 		"to": TIMESTAMP,
 		"user_count": INTEGER,
-		"latency_count": INTEGER,
-		"location": {
-			"coordinates": [FLOAT, FLOAT],
-			"country": STRING,
-			"country_code": ISO2_STRING,
-			"region": STRING,
-			"county": STRING,
-			"city": STRING
-		}
+		"latency_count": INTEGER
 	},
 ]
 ```
@@ -422,9 +407,10 @@ Arguments for the request :
 - **`city`** (String) : the city of the requests wanted, no default.
 - **`from`** (Int) : retrieve latencies starting from this timestamp, default at `0`.
 - **`to`** (Int) : retrieve latencies until this timestamp, default at `∞`.
-- **`frame`** (Int) : number of seconds per frame
 - **`limit`** (Int) : give the maximum of users to return.
 - **`skip`** (Int) : give the number of data points to skip.
+- ***`**sortBy**`** (String) : the name of the field to sort the results by.
+- **`**sortOrder**`** (Int) : the order of the sorting, `1` for ascending order, `-1` for descending order.
 
 <br>
 
