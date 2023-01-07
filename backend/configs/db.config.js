@@ -13,13 +13,16 @@ const { MongoClient, Db } = require("mongodb");
 const config = {
     username: "",
     password: '',
-    host: process.env.MONGO_HOST || 'localhost',
+    host: process.env.MONGO_HOST || '127.0.0.1',
     port: process.env.MONGO_PORT || 27017,
     databaseName: 'test_semester_project',
     userCollectionName: 'user_locations',
     latencyCollectionName: 'latency',
     locationCollectionName: 'locations',
 }
+
+// Database client saved for later use
+let databaseClient = null
 
 
 /**
@@ -28,16 +31,20 @@ const config = {
  */
 
 const dbConnect = () => {
+    if(databaseClient) return databaseClient
+    
+    console.log("Connecting to MongoDB at : " + config.host + ":" + config.port )
     let connString = config.username ? `mongodb://${config.username}:${config.password}@${config.host}:${config.port || 27017}/${config.databaseName}` : `mongodb://${config.host}:${config.port || 27017}/${config.databaseName}`
 
     const client = new MongoClient(connString)
     const database = client.db(config.databaseName)
 
     database.command({ ping: 1 }).then(() => 
-        console.log("Connected successfully to MongoDB")).catch(() => 
-        console.log("Error during connection to database")
+        console.log("Connected successfully to MongoDB")).catch((e) => 
+        console.log("Error during connection to database: " + e)
         )
 
+    databaseClient = database
     return database
 }
 
