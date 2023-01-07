@@ -44,6 +44,35 @@ module.exports = (req, res, next) => {
         } else {
             req.query.isCity = false
         }
+
+        if(!req.query.skip) {
+            req.query.skip = -1
+        } else {
+            req.query.skip = parseInt(req.query.skip)
+        }
+    
+        if(!req.query.limit) {
+            req.query.limit = -1
+        } else if (req.query.limit >= 0 && req.query.limit < 10) {
+            req.query.limit = 10
+        } else {
+            req.query.limit = parseInt(req.query.limit)
+        }
+
+        if(!req.query.sortBy) {
+            req.query.sortBy = "user_id"
+        }
+
+        if(!req.query.sortOrder) {
+            req.query.sortOrder = 1
+        } else {
+            req.query.sortOrder = parseInt(req.query.sortOrder)
+        }
+
+        if(req.query.frame) {
+            req.query.frame = parseInt(req.query.frame)
+            req.query.frame = req.query.frame < 15 ? 15 : req.query.frame
+        }
     
         next()
     } catch(error) {

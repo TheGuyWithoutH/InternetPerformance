@@ -12,8 +12,8 @@ const prepareArgs = require("../../middlewares/parametersPreparation")
 
 router.get('/time/', prepareArgs, queryController.makeGlobalQuery)
 router.get('/spatial/', prepareArgs, queryController.makeGlobalQuery)
-router.get('/world/', queryController.makeWorldQuery)
-router.get('/user/', queryController.makeUserIdQuery)
-router.get('/stream/', queryController.makeStreamIdQuery)
+router.get('/world/', prepareArgs, queryController.makeWorldQuery)
+router.get('/user/', prepareArgs, queryController.makeUserIdQuery)
+router.get('/stream/', prepareArgs, queryController.makeStreamIdQuery)
 
 module.exports = router

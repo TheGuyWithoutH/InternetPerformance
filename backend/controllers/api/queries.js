@@ -60,7 +60,7 @@ exports.makeGlobalQuery = (req, res, next) => {
         .catch((error) => {
             console.log(error)
             res.status(400).json({
-                error: error
+                error: error.message
             });
         })
     
@@ -76,7 +76,7 @@ exports.makeGlobalQuery = (req, res, next) => {
 exports.makeUserIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
     
-    query(db, {user_id: req.query.id, streamOn: req.query.streamId}, queryTypes.USERID)
+    query(db, {user_id: req.query.id, streamOn: req.query.streamId, sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.USERID)
         .then((doc) => {
             let result = {}
             
@@ -99,7 +99,7 @@ exports.makeUserIdQuery = (req, res, next) => {
         .catch((error) => {
             console.log(error)
             res.status(400).json({
-                error: error
+                error: error.message
             });
         })
 }
@@ -113,7 +113,7 @@ exports.makeUserIdQuery = (req, res, next) => {
 exports.makeStreamIdQuery = (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
 
-    query(db, {stream_id: req.query.id, streamOn: off}, queryTypes.STREAMID)
+    query(db, {stream_id: req.query.id, streamOn: "off", sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.STREAMID)
         .then((doc) => {
             let result = {}
 
@@ -142,7 +142,7 @@ exports.makeStreamIdQuery = (req, res, next) => {
         .catch((error) => {
             console.log(error)
             res.status(400).json({
-                error: error
+                error: error.message
             });
         })
 }
@@ -154,7 +154,7 @@ exports.makeStreamIdQuery = (req, res, next) => {
  * @param {NextFunction} next The next middleware/controller to execute
  */
 exports.makeWorldQuery = (req, res, next) => {
-    query(db, {}, queryTypes.WORLD)
+    query(db, {sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.WORLD)
         .then((doc) => {
             let result = []
             console.log(doc)
@@ -178,7 +178,7 @@ exports.makeWorldQuery = (req, res, next) => {
         .catch((error) => {
             console.log(error)
             res.status(400).json({
-                error: error
+                error: error.message
             });
         })
 }
