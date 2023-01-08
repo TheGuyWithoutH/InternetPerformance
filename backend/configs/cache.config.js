@@ -11,3 +11,10 @@ exports.createClient = async () => {
     })
   }
 }
+
+exports.expirationTimes = {
+  timeFrame: 3600,
+  locationQuery: 3600,
+  userQuery: 3600,
+  streamQuery: 3600
+}
