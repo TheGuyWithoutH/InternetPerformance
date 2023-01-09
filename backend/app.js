@@ -11,7 +11,9 @@ const { createClient } = require('./configs/cache.config')
 const app = express();
 
 //Open cache connection
-createClient()
+if (!process.env.CACHING || process.env.CACHING === 'on') {
+  createClient()
+}
 
 
 const queryRouter = require('./routes/api/queries')
