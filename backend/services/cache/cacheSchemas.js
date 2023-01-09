@@ -6,7 +6,7 @@
 
 const { query } = require("../api/dbQuery")
 
-const {Entity, Schema } = reqire('redis-om')
+const {Entity, Schema } = require('redis-om')
 
 
 
@@ -16,12 +16,12 @@ class TimeFrame extends Entity {
         return JSON.parse(this.location)
     }
 
-    get timeframe() {
+    timeframe() {
         return {
             from: this.from,
             to: this.to,
-            user_count: this.user_count,
             latency_count: this.latency_count,
+            user_count: this.user_count,
         }
     }
 }
@@ -33,8 +33,8 @@ class TimeFrame extends Entity {
 exports.timeFrameSchema = new Schema(TimeFrame, {
     from: { type: 'number' },
     to: { type: 'number' },
-    user_count: { type: 'number' },
     latency_count: { type: 'number' },
+    user_count: { type: 'number' },
     location: { type: 'string' }
 })
 
@@ -46,7 +46,7 @@ class LocationQuery extends Entity {
         return JSON.parse(this.location)
     }
 
-    get userAtlocation() {
+    userAtLocation() {
         return {
             user_id: this.user_id,
             location: this.locationJSON,
@@ -78,7 +78,7 @@ class UserQuery extends Entity {
         return JSON.parse(this.location)
     }
 
-    get user() {
+    user() {
         return {
             user_id: this.user_id,
             latencies: this.latenciesJSON,
@@ -111,7 +111,7 @@ class StreamQuery extends Entity {
         return JSON.parse(this.location)
     }
 
-    get stream() {
+    stream() {
         return {
             stream_id: this.stream_id,
             user_id: this.user_id,

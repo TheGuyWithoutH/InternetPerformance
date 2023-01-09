@@ -9,7 +9,9 @@ const path = require('node:path');
 const { createClient } = require('./configs/cache.config')
 
 const app = express();
-//createClient()
+
+//Open cache connection
+createClient()
 
 
 const queryRouter = require('./routes/api/queries')

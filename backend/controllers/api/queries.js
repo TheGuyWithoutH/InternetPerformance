@@ -9,6 +9,7 @@ const assert = require('node:assert').strict;
 const {query, queryTypes} = require('../../services/api/dbQuery');
 const stats = require('../../services/api/arrayStatistics')
 const { dbConnect } = require('../../configs/db.config');
+const { saveStreamQueryInCache, saveUserQueryInCache, getUserQueryFromCache, getStreamQueryFromCache } = require('../../services/cache/cacheQuery');
 
 
 const db = dbConnect()
@@ -73,16 +74,39 @@ exports.makeGlobalQuery = (req, res, next) => {
  * @param {Response} res The HTTP response that will be sent back
  * @param {NextFunction} next The next middleware/controller to execute
  */
-exports.makeUserIdQuery = (req, res, next) => {
+exports.makeUserIdQuery = async (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
+
+    //Check if query is in cache
+    const cachedQuery = await getUserQueryFromCache(req.query.id)
+
+    if(cachedQuery) {
+        const latencyArray = cachedQuery.latencies.map((data) => data.latency)
+
+        let result = req.query.latencyOnly ?
+            {
+                stats: makeStats(latencyArray),
+                latencies: cachedQuery.latencies
+            } : {
+                stats: makeStats(latencyArray),
+                user: cachedQuery
+            }
+        
+        res.status(200).json(result)
+        return
+    }
     
-    query(db, {user_id: req.query.id, streamOn: req.query.streamId, sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.USERID)
+    query(db, {user_id: req.query.id, streamOn: "on", sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.USERID)
         .then((doc) => {
             let result = {}
             
             if(doc.length > 0) {
                 const user = doc[0]
                 const latencyArray = user.latencies.map((data) => data.latency)
+                user.latencies = user.latencies.map((data) => { if(req.query.streamId) delete data.stream_id; return data })
+
+                //Cache user query
+                saveUserQueryInCache(user)
 
                 result = req.query.latencyOnly ?
                 {
@@ -110,8 +134,27 @@ exports.makeUserIdQuery = (req, res, next) => {
  * @param {Response} res The HTTP response that will be sent back
  * @param {NextFunction} next The next middleware/controller to execute
  */
-exports.makeStreamIdQuery = (req, res, next) => {
+exports.makeStreamIdQuery = async (req, res, next) => {
     if(!req.query.id) throw new Error("Missing argument in query : 'id'.")
+
+    //Check if query is in cache
+    const cachedQuery = await getStreamQueryFromCache(req.query.id)
+    if(cachedQuery) {
+        const latencyArray = cachedQuery.latencies.map((data) => data.latency)
+
+        let result = req.query.latencyOnly ?
+                {
+                    stats: makeStats(latencyArray),
+                    latencies: cachedQuery.latencies
+                } : {
+                    stats: makeStats(latencyArray),
+                    stream: cachedQuery
+                }
+
+        console.log("Query in cache")
+
+        return res.status(200).json(result)
+    }
 
     query(db, {stream_id: req.query.id, streamOn: "off", sortBy: req.query.sortBy, sortOrder: req.query.sortOrder}, queryTypes.STREAMID)
         .then((doc) => {
@@ -126,6 +169,8 @@ exports.makeStreamIdQuery = (req, res, next) => {
                     latencies: user.latencies,
                     location: user.location
                 }
+
+                saveStreamQueryInCache(stream)
 
                 result = req.query.latencyOnly ?
                 {

@@ -9,6 +9,9 @@ const assert = require('node:assert').strict;
 const {query, queryTypes} = require('../../services/api/dbQuery');
 const { range } = require('../../utils/numbers');
 const { dbConnect } = require('../../configs/db.config');
+const { saveTimeFrameInCache, getTimeFrameFromCache } = require('../../services/cache/cacheQuery');
+const { extractLocationQuery } = require('../../utils/location');
+const parseDate = require('../../utils/parseDate');
 
 
 const db = dbConnect()
@@ -20,7 +23,7 @@ const db = dbConnect()
  * @param {Response} res The HTTP response that will be sent back
  * @param {NextFunction} next The next middleware/controller to execute
  */
-exports.timeframeQuery = (req, res, next) => {
+exports.timeframeQuery = async (req, res, next) => {
     const queryType = queryTypes.TIMEFRAME;
 
     try {
@@ -34,6 +37,39 @@ exports.timeframeQuery = (req, res, next) => {
     }
 
     req.query.boundaries = range(req.query.from.valueOf() / 1000, req.query.to.valueOf() / 1000, req.query.frame)
+
+    //Get the data from the cache
+    let cachedData = []
+
+    //Forward pass to get the data from the cache
+    while (req.query.boundaries.length > 1) {
+        const cached = await getTimeFrameFromCache(req.query.boundaries[0], req.query.boundaries[1], extractLocationQuery(req.query))
+        if (cached) {
+            cachedData.push(cached)
+            req.query.boundaries.shift()
+        } else {
+            break
+        }
+    }
+
+    //Backward pass to get the data from the cache
+    while (req.query.boundaries.length > 1) {
+        const cached = await getTimeFrameFromCache(req.query.boundaries[req.query.boundaries.length - 2], req.query.boundaries[req.query.boundaries.length - 1], extractLocationQuery(req.query))
+        if (cached) {
+            cachedData.push(cached)
+            req.query.boundaries.pop()
+        } else {
+            break
+        }
+    }
+
+    if(req.query.boundaries.length <= 1) {
+        res.status(200).json(cachedData.sort((a, b) => a.from - b.from))
+        return
+    } else if (cachedData.length > 0) {
+        req.query.from = parseDate(req.query.boundaries[0].toString())
+        req.query.to = parseDate(req.query.boundaries[req.query.boundaries.length - 1].toString())
+    }
     
     query(db, req.query, queryType).then((result) => {
         result.forEach(element => {
@@ -41,7 +77,13 @@ exports.timeframeQuery = (req, res, next) => {
             delete element.users
         });
 
+        result = cachedData.length > 0 ? result.concat(cachedData).sort((a, b) => a.from - b.from) : result
+
         res.status(200).json(result)
+
+        result.forEach(element => {
+            saveTimeFrameInCache(element, extractLocationQuery(req.query))
+        })
     }).catch((error) => {
         console.log(error)
         res.status(400).json({

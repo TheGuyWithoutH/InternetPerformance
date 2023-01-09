@@ -8,11 +8,22 @@ const { Repository } = require('redis-om')
 const { client, expirationTimes } = require('../../configs/cache.config')
 const { timeFrameSchema, locationQuerySchema, userQuerySchema, streamQuerySchema } = require('./cacheSchemas')
 
+const crypto = require('crypto')
+
+
+////////////////////START REPOSITORIES AND MAKE INDEXES//////////////////////////
 
 const timeframeRepository = client.fetchRepository(timeFrameSchema)
+timeframeRepository.createIndex();
+
 const locationQueryRepository = client.fetchRepository(locationQuerySchema)
+locationQueryRepository.createIndex();
+
 const userQueryRepository = client.fetchRepository(userQuerySchema)
+userQueryRepository.createIndex();
+
 const streamQueryRepository = client.fetchRepository(streamQuerySchema)
+streamQueryRepository.createIndex();
 
 
 /////////////////////////////SAVE IN CACHE///////////////////////////////////////
@@ -34,6 +45,8 @@ exports.saveTimeFrameInCache = async (timeFrame, location) => {
         timeFrameEntity.latency_count = timeFrame.latency_count
         timeFrameEntity.location = JSON.stringify(location)
 
+        console.info("Caching time frame")
+
         return timeframeRepository.save(timeFrameEntity).then((id) => 
             client.execute(['EXPIRE', `TimeFrame:${id}`, expirationTimes.timeFrame]))
     } else {
@@ -49,9 +62,9 @@ exports.saveTimeFrameInCache = async (timeFrame, location) => {
  * @returns {Promise} the promise of the save operation
  */
 exports.saveLocationQueryInCache = async (locationQuery, query) => {
-    if (locationQuery.user_id && locationQuery.location && queries) {
+    if (locationQuery.user_id && locationQuery.location && query) {
         const hash = hashQuery(query)
-
+        
         const locationQueryEntity = await locationQueryRepository.search()
                                                                 .where('queries').contains(hash)
                                                                 .returnFirst()
@@ -59,8 +72,8 @@ exports.saveLocationQueryInCache = async (locationQuery, query) => {
                                                                     entity ? entity : locationQueryRepository.createEntity())
 
         locationQueryEntity.user_id = locationQuery.user_id
-        locationQueryEntity.location = locationQuery.location
-        locationQueryEntity.queries = [ ...locationQueryEntity.queries, hash ]
+        locationQueryEntity.location = JSON.stringify(locationQuery.location)
+        locationQueryEntity.queries = locationQueryEntity.queries ? [ ...locationQueryEntity.queries, hash ] : [ hash ]
 
         return locationQueryRepository.save(locationQueryEntity).then((id) =>
             client.execute(['EXPIRE', `LocationQuery:${id}`, expirationTimes.locationQuery]))
@@ -82,6 +95,8 @@ exports.saveUserQueryInCache = async (userQuery) => {
         userQueryEntity.user_id = userQuery.user_id
         userQueryEntity.latencies = userQuery.latencies.map(elem => JSON.stringify(elem))
         userQueryEntity.location = JSON.stringify(userQuery.location)
+
+        console.info("Caching user query")
 
         return userQueryRepository.save(userQueryEntity).then((id) =>
             client.execute(['EXPIRE', `UserQuery:${id}`, expirationTimes.userQuery]))
@@ -105,6 +120,8 @@ exports.saveStreamQueryInCache = async (streamQuery) => {
         streamQueryEntity.latencies = streamQuery.latencies.map(elem => JSON.stringify(elem))
         streamQueryEntity.location = JSON.stringify(streamQuery.location)
 
+        console.info("Caching stream query")
+
         return streamQueryRepository.save(streamQueryEntity).then((id) =>
             client.execute(['EXPIRE', `StreamQuery:${id}`, expirationTimes.streamQuery]))
     } else {
@@ -126,9 +143,10 @@ exports.saveStreamQueryInCache = async (streamQuery) => {
 exports.getTimeFrameFromCache = async (from, to, location) => {
     return timeframeRepository.search().where('from').equals(from)
                                     .and('to').equals(to)
-                                    .and('location').matchExactly(JSON.stringify(location))
+                                    .and('location').equal(JSON.stringify(location))
                                     .returnFirst()
-                                    .then((timeFrameEntity) => timeFrameEntity.timeframe())
+                                    .then((timeFrameEntity) => 
+                                        timeFrameEntity ? timeFrameEntity.timeframe() : null)
 }
 
 
@@ -141,7 +159,7 @@ exports.getLocationQueryFromCache = async (query) => {
     return locationQueryRepository.search().where('queries').contains(hashQuery(query))
                                             .returnAll()
                                             .then((locationEntities) =>
-                                                locationEntities.map((locationEntity) => locationEntity.userAtLocation()))
+                                                locationEntities.length ? locationEntities.map((locationEntity) => locationEntity.userAtLocation()) : null)
 }
 
 

@@ -7,6 +7,8 @@
 const assert = require('node:assert').strict;
 const { MongoClient, MongoError } = require("mongodb");
 const { config } = require('../../configs/db.config');
+const { extractLocationQuery } = require('../../utils/location');
+const { saveLocationQueryInCache, getLocationQueryFromCache } = require('../cache/cacheQuery');
 
 /**
  * Enum of types of queries
@@ -76,45 +78,23 @@ exports.latencyQuery = async (db, parameters, aggregation) => {
  * @param {Object} parameters Javascript Object containing the parameters for the spatial request
  * @returns {Promise} A promise containing the result of the query on database
  */
-exports.locationQuery = (db, parameters) => {
+exports.locationQuery = async (db, parameters) => {
     _checkCollectionExist(db, config.userCollectionName);
 
-    const query = {}
-
-    if(parameters.coordinates) {
-        parameters.maxDistance = parameters.maxDistance || 1000;
-        query['location.coordinates'] = {
-            $geoWithin: {
-                $centerSphere: [parameters.coordinates, parameters.maxDistance/6378100]
-            }
-        }
-    }
-
-    if(parameters.country) {
-        query['location.country'] = parameters.country
-    }
-
-    if(parameters.country_code) {
-        query['location.country_code'] = parameters.country_code
-    }
-
-    if(parameters.region) {
-        query['location.region'] = parameters.region
-    }
-
-    if(parameters.county) {
-        query['location.county'] = parameters.county
-    }
-
-    if(parameters.city) {
-        query['location.city'] = parameters.city
-    }
+    const query = extractLocationQuery(parameters)
 
     if(parameters.user_id) {
         query.user_id = parameters.user_id
+    } else {
+        // If the query is not for a specific user, we check if the query is in the cache
+        const cachedQuery = await getLocationQueryFromCache(query)
+        if(cachedQuery) return cachedQuery
     }
 
-    return _dbQuery(db, config.userCollectionName, [{$match: query}])
+    return _dbQuery(db, config.userCollectionName, [{$match: query}]).then(result => {
+        if(!parameters.user_id) result.forEach((elem) => saveLocationQueryInCache(elem, query))
+        return result
+    })
 }
 
 /**
