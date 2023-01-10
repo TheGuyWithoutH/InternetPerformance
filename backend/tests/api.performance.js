@@ -347,9 +347,65 @@ function tableTest3() {
         method: 'GET',
         contentType: 'application/json',
         statusCallback: statusCallback
-    }, testEnd("Test of the Table API endpoint for country USA and city New York from 2022-05-20 to 2022-06-12 for 20 latencies sorted by latency", end));
+    }, testEnd("Test of the Table API endpoint for country USA and city New York from 2022-05-20 to 2022-06-12 for 20 latencies sorted by latency", searchTest1));
 }
 
+
+/////////////////////////////////////////////////////////////////////
+//////////////////////////TESTS SEARCH API///////////////////////////
+/////////////////////////////////////////////////////////////////////
+
+// Test the World API endpoint with 500 requests
+
+function searchTest1() {
+    loadtest.loadTest({
+        url: 'http://localhost:3000/api/search/world',
+        maxRequests: 500,
+        concurrency: 50,
+        method: 'GET',
+        contentType: 'application/json',
+        statusCallback: statusCallback
+    }, testEnd("Test of the World API endpoint for countries overview", searchTest2));
+}
+
+// Test the Search API endpoint with 500 requests for countries
+
+function searchTest2() {
+    loadtest.loadTest({
+        url: 'http://localhost:3000/api/search/locations?featureCode=P',
+        maxRequests: 500,
+        concurrency: 50,
+        method: 'GET',
+        contentType: 'application/json',
+        statusCallback: statusCallback
+    }, testEnd("Test of the World API endpoint for countries overview", searchTest3));
+}
+
+// Test the Search API endpoint with 500 requests for regions in France
+
+function searchTest3() {
+    loadtest.loadTest({
+        url: 'http://localhost:3000/api/search/locations?featureCode=R&countryCode=FR',
+        maxRequests: 500,
+        concurrency: 50,
+        method: 'GET',
+        contentType: 'application/json',
+        statusCallback: statusCallback
+    }, testEnd("Test of the World API endpoint for countries overview", searchTest4));
+}
+
+// Test the Search API endpoint with 500 requests for cities in Brittany in France
+
+function searchTest4() {
+    loadtest.loadTest({
+        url: 'http://localhost:3000/api/search/locations?featureCode=V&countryCode=FR&admin1Code=53',
+        maxRequests: 500,
+        concurrency: 50,
+        method: 'GET',
+        contentType: 'application/json',
+        statusCallback: statusCallback
+    }, testEnd("Test of the World API endpoint for countries overview", end));
+}
 
 
 /////////////////////////////////////////////////////////////////////
