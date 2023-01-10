@@ -18,6 +18,7 @@ if (!process.env.CACHING || process.env.CACHING === 'on') {
 
 const queryRouter = require('./routes/api/queries')
 const servicesRouter = require('./routes/api/services')
+const searchRouter = require('./routes/api/search')
 
 const CLIENT_BUILD_PATH = path.join(__dirname, '../../client/build');
 
@@ -36,6 +37,7 @@ app.use(function(req, res, next) {
 // API Routes
 app.use('/api/query', queryRouter)
 app.use('/api/services', servicesRouter)
+app.use('/api/search', searchRouter)
 
 if (process.env.NODE_ENV === 'production') {
   // All remaining requests return the React app, so it can handle routing.

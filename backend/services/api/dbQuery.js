@@ -106,25 +106,43 @@ exports.locationQuery = async (db, parameters) => {
 exports.searchQuery = (db, parameters) => {
     _checkCollectionExist(db, config.locationCollectionName);
 
-    if(!parameters.name) {
-        return new Promise((resolve, reject) => {
-            reject(new Error("Missing name parameter"))
-        })
+    const query = {}
+
+    if (parameters.name) {
+        query.name = parameters.name
     }
 
-    return _dbQuery(db, config.locationCollectionName, [
-        {
-            $match: 
-            { 
-                $and: [
-                    {$text: { $search:  parameters.name }}, 
-                    {'feature class': parameters.isCity ? "P" : "A"}
-                ]
-            }
-        }, 
-        { $sort: { score: { $meta: "textScore" } } },
-        {$project: { name: 1, _id: 0 } }
-    ])
+    if (parameters.countryCode) {
+        query.country_code = parameters.countryCode
+    }
+
+    if (parameters.admin1Code) {
+        query.admin1_code = parameters.admin1Code
+    }
+
+    if (parameters.featureCode) {
+        query.feature_code = parameters.featureCode
+    }
+
+    const project = parameters.additionalInfo ? {
+        $project: {
+            _id: 0
+        }
+    }
+    :
+    {
+        $project: {
+            _id: 0,
+            position: 0,
+            population: 0,
+            geometry: 0,
+            stats: 0
+        }
+    }
+
+    const pipeline = [{$match: query}, project]
+
+    return _dbQuery(db, config.locationCollectionName, pipeline)
 }
 
 /**

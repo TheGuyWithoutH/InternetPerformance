@@ -10,6 +10,8 @@ const router = express.Router();
 const searchController = require('../../controllers/api/search');
 const prepareArgs = require("../../middlewares/parametersPreparation")
 
-router.get('/', prepareArgs, searchController.makeSearch);
+router.get('/world', searchController.worldMap)
+
+router.get('/locations', prepareArgs, searchController.makeSearch)
 
 module.exports = router

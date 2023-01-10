@@ -22,6 +22,10 @@ module.exports = (req, res, next) => {
         if(req.query.from) {
             req.query.from = parseDate(req.query.from)
         }
+
+        if(req.query.country_code) {
+            req.query.country_code = req.query.country_code.toLowerCase()
+        }
     
         if(req.query.to) {
             req.query.to = parseDate(req.query.to)
@@ -72,6 +76,12 @@ module.exports = (req, res, next) => {
         if(req.query.frame) {
             req.query.frame = parseInt(req.query.frame)
             req.query.frame = req.query.frame < 15 ? 15 : req.query.frame
+        }
+
+        if(req.query.additionalInfo && req.query.additionalInfo === "on") {
+            req.query.additionalInfo = true
+        } else {
+            req.query.additionalInfo = false
         }
     
         next()
