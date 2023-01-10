@@ -200,7 +200,10 @@ exports.query = (db, parameters, reqType) => {
         case this.queryTypes.SEARCH:
             return this.searchQuery(db, parameters)
         case this.queryTypes.TIMEFRAME:
-            const aggregation = [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users"}}]
+            const aggregation = parameters.meanLatency ? 
+                [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }, mean_latency: {$avg: "$latency"}}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users", "mean_latency": "$mean_latency"}}]
+                :
+                [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users"}}]
             return this.latencyQuery(db, parameters, aggregation)
         case this.queryTypes.TABLE:
             return this.locationQuery(db, parameters).then(

@@ -41,27 +41,30 @@ exports.timeframeQuery = async (req, res, next) => {
     //Get the data from the cache
     let cachedData = []
 
-    //Forward pass to get the data from the cache
-    while (req.query.boundaries.length > 1) {
-        const cached = await getTimeFrameFromCache(req.query.boundaries[0], req.query.boundaries[1], extractLocationQuery(req.query))
-        if (cached) {
-            cachedData.push(cached)
-            req.query.boundaries.shift()
-        } else {
-            break
+    if(!req.query.meanLatency) {
+        //Forward pass to get the data from the cache
+        while (req.query.boundaries.length > 1) {
+            const cached = await getTimeFrameFromCache(req.query.boundaries[0], req.query.boundaries[1], extractLocationQuery(req.query))
+            if (cached) {
+                cachedData.push(cached)
+                req.query.boundaries.shift()
+            } else {
+                break
+            }
+        }
+    
+        //Backward pass to get the data from the cache
+        while (req.query.boundaries.length > 1) {
+            const cached = await getTimeFrameFromCache(req.query.boundaries[req.query.boundaries.length - 2], req.query.boundaries[req.query.boundaries.length - 1], extractLocationQuery(req.query))
+            if (cached) {
+                cachedData.push(cached)
+                req.query.boundaries.pop()
+            } else {
+                break
+            }
         }
     }
 
-    //Backward pass to get the data from the cache
-    while (req.query.boundaries.length > 1) {
-        const cached = await getTimeFrameFromCache(req.query.boundaries[req.query.boundaries.length - 2], req.query.boundaries[req.query.boundaries.length - 1], extractLocationQuery(req.query))
-        if (cached) {
-            cachedData.push(cached)
-            req.query.boundaries.pop()
-        } else {
-            break
-        }
-    }
 
     if(req.query.boundaries.length <= 1) {
         res.status(200).json(cachedData.sort((a, b) => a.from - b.from))
@@ -81,9 +84,11 @@ exports.timeframeQuery = async (req, res, next) => {
 
         res.status(200).json(result)
 
-        result.forEach(element => {
-            saveTimeFrameInCache(element, extractLocationQuery(req.query))
-        })
+        if(!req.query.meanLatency) {
+            result.forEach(element => {
+                saveTimeFrameInCache(element, extractLocationQuery(req.query))
+            })
+        }
     }).catch((error) => {
         console.log(error)
         res.status(400).json({

@@ -78,6 +78,12 @@ module.exports = (req, res, next) => {
             req.query.frame = req.query.frame < 15 ? 15 : req.query.frame
         }
 
+        if(req.query.meanLatency && req.query.meanLatency === "on") {
+            req.query.meanLatency = true
+        } else  {
+            req.query.meanLatency = false
+        }
+
         if(req.query.additionalInfo && req.query.additionalInfo === "on") {
             req.query.additionalInfo = true
         } else {
