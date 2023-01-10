@@ -301,7 +301,20 @@ function timeframeTest2() {
         method: 'GET',
         contentType: 'application/json',
         statusCallback: statusCallback
-    }, testEnd("Test of the Timeframe API endpoint for a timeframe of 1 day from 2022-04-16 to 2022-05-03 at New York with latencies only", tableTest1));
+    }, testEnd("Test of the Timeframe API endpoint for a timeframe of 1 day from 2022-04-16 to 2022-05-03 at New York with latencies only", timeframeTest3));
+}
+
+// Test the Timeframe API endpoint with 5000 requests for timeframe of 1 day from 2022-04-16 to 2022-05-03 at New York with mean latencies
+
+function timeframeTest3() {
+    loadtest.loadTest({
+        url: 'http://localhost:3000/api/services/timeframe?country=United%20States&city=New%20York&from=2022-04-16&to=2022-05-03&frame=86400&meanLatency=on',
+        maxRequests: 5000,
+        concurrency: 100,
+        method: 'GET',
+        contentType: 'application/json',
+        statusCallback: statusCallback
+    }, testEnd("Test of the Timeframe API endpoint for a timeframe of 1 day from 2022-04-16 to 2022-05-03 at New York with mean latencies", tableTest1));
 }
 
 
@@ -391,7 +404,7 @@ function searchTest3() {
         method: 'GET',
         contentType: 'application/json',
         statusCallback: statusCallback
-    }, testEnd("Test of the World API endpoint for countries overview", searchTest4));
+    }, testEnd("Test of the World API endpoint for regions in France", searchTest4));
 }
 
 // Test the Search API endpoint with 500 requests for cities in Brittany in France
@@ -404,7 +417,7 @@ function searchTest4() {
         method: 'GET',
         contentType: 'application/json',
         statusCallback: statusCallback
-    }, testEnd("Test of the World API endpoint for countries overview", end));
+    }, testEnd("Test of the World API endpoint for cities in Brittany in France", end));
 }
 
 
