@@ -1,10 +1,10 @@
 import React from 'react';
 
-const CountryModal = ({geo, data, color, setModal}) => {
+const CountryModal = ({geo, color, setModal}) => {
     return (
         <div className='country-modal-bg' onClick={() => setModal(null)}>
             <div className='country-modal' onClick={(e) => e.stopPropagation()}>
-                <h1 className='country-modal-title'>{geo.properties.name}</h1>
+                <h1 className='country-modal-title'>{geo.name}</h1>
                 <div className='country-modal-content'>
                     <div className='country-modal-infos'>
                         <img className='modal-map' src="http://darksouls3.wiki.fextralife.com/file/Dark-Souls-3/map_placeholder.gif" alt='flag' />
@@ -16,9 +16,9 @@ const CountryModal = ({geo, data, color, setModal}) => {
                                 <h1>Cities</h1>
                             </div>
                             <div className='country-modal-infos-details-values'>
-                                <p>{geo.properties.iso_a2_eh}</p>
-                                <p>{geo.properties.pop_est.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</p>
-                                <p>{data.count}</p>
+                                <p>{geo.country_code}</p>
+                                <p>{geo.population.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")}</p>
+                                <p>{geo.stats.user_count}</p>
                                 <p>Cities</p>
                             </div>
                         </div>

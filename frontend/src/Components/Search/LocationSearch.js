@@ -3,6 +3,9 @@ import React from 'react';
 import SearchMap from './SearchMap';
 
 const LocationSearch = ({tab, switchTab }) => {
+
+    
+
     return (
         <div className='search-location-content'>
             <div className='search-location-filters'>

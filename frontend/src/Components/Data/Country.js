@@ -4,16 +4,7 @@ import {
 } from "react-simple-maps";
 import CountryModal from './CountryModal';
 
-const Country = ({ data, geo, changeHighlight, colorScale, setModal }) => {
-    const [d, setD] = useState(data[geo.properties.iso_a2_eh.toLowerCase()]);
-
-    useState(() => {
-        if (d && d.count > 1000) {
-            setD({ count: 1000 });
-        } else if (!d || d.count < 100) {
-            setD({ count: 100 });
-        }
-    }, [d]);
+const Country = ({ geo, changeHighlight, colorScale, setModal }) => {
 
     return (
         <Geography
@@ -21,7 +12,7 @@ const Country = ({ data, geo, changeHighlight, colorScale, setModal }) => {
             geography={geo}
             onMouseEnter={() => {
                 changeHighlight({
-                    highlighted: geo.properties.name,
+                    highlighted: geo.name,
                     hovered: true
                 });
             }}
@@ -32,9 +23,9 @@ const Country = ({ data, geo, changeHighlight, colorScale, setModal }) => {
                 });
             }}
             onClick={() => {
-                setModal(<CountryModal geo={geo} color={d ? colorScale(d.count) : "#F5F4F6"} setModal={setModal} data={data[geo.properties.iso_a2_eh.toLowerCase()] ?? {count: 0}} />);
+                setModal(<CountryModal geo={geo} color={colorScale(geo.stats.user_count)} setModal={setModal} />);
             }}
-            fill={d ? colorScale(d.count) : "#F5F4F6"}
+            fill={colorScale(geo.stats.user_count)}
             style={{
                 default: { outline: "none" },
                 hover: { outline: "none", fill: "#306" },

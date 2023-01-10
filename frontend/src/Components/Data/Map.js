@@ -7,7 +7,6 @@ import {
   Geography,
   ZoomableGroup
 } from "react-simple-maps";
-import { backendConfig } from "../../Services/config";
 import World from "./World";
 
 const geoUrl = "/custom.geo.json";
@@ -18,17 +17,6 @@ const colorScale = scaleLinear()
 
 const Map = ({changeHighlight, setModal}) => {
   const [position, setPosition] = useState({ coordinates: [0, 0], zoom: 1 });
-  const [data, setData] = useState(null);
-
-  useEffect(() => {
-    if (!data) {
-      fetch(backendConfig.url + ":" + backendConfig.port + "/api/query/world")
-        .then(response => response.json())
-        .then(data => {
-          setData(data);
-        });
-    }
-  }, []);
 
   const projection = geoMercator()
 
@@ -52,7 +40,7 @@ const Map = ({changeHighlight, setModal}) => {
           translateExtent={[[-100, -200], [1100, 500]]}
           onMoveEnd={handleMoveEnd}
         >
-          {data && (<World data={data} changeHighlight={changeHighlight} setModal={setModal} />)}
+          <World changeHighlight={changeHighlight} setModal={setModal} />
         </ZoomableGroup>
       </ComposableMap>
     </div>
