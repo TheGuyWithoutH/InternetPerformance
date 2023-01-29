@@ -1,3 +1,9 @@
+/**
+ * @file The data overview page
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 import '../Assets/Styles/DataOverview.css';
 import MapView from '../Components/Data/MapView';

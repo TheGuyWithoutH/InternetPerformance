@@ -29,7 +29,6 @@ let databaseClient = null
  * Connect mongoose to the database, given the parameters
  * @return {Db} The database to connect to
  */
-
 const dbConnect = () => {
     if(databaseClient) return databaseClient
     

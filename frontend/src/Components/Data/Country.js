@@ -1,4 +1,10 @@
-import React, { useState } from 'react';
+/**
+ * @file Country component for the map
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
+import React from 'react';
 import {
     Geography
 } from "react-simple-maps";

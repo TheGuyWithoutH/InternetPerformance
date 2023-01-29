@@ -1,3 +1,9 @@
+/**
+ * @file Scale overview component for the scale of the data
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 
 import '../../Assets/Styles/Components/ScaleOverview.css';

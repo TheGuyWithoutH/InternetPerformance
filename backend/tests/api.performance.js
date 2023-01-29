@@ -1,5 +1,5 @@
 /**
- * @file Manage the configuration and connection to Mongoose
+ * @file Test the performance of the API
  * @author Ugo Balducci
  * @version 1.0.0
 */

@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file Schemas for the entities stored in the Redis cache
  * @author Ugo Balducci
  * @version 1.0.0
  */
@@ -12,6 +12,10 @@ const {Entity, Schema } = require('redis-om')
 
 
 class TimeFrame extends Entity {
+
+    /**
+     * @return {Object} The location of the timeFrame as a JSON object
+     */
     get locationJSON() {
         return JSON.parse(this.location)
     }
@@ -42,10 +46,17 @@ exports.timeFrameSchema = new Schema(TimeFrame, {
 
 
 class LocationQuery extends Entity {
+
+    /**
+     * @return {Object} The location of the locationQuery as a JS object
+     */
     get locationJSON() {
         return JSON.parse(this.location)
     }
 
+    /**
+     * @return {Object} The result of the locationQuery as a JS object
+     */
     userAtLocation() {
         return {
             user_id: this.user_id,
@@ -68,16 +79,26 @@ exports.locationQuerySchema = new Schema(LocationQuery, {
 
 
 class UserQuery extends Entity {
+
+    /**
+     * @return {Object} The latencies of the userQuery as a JS object
+     */
     get latenciesJSON() {
         return this.latencies.map((latency) => {
             return JSON.parse(latency)
         })
     }
 
+    /**
+     * @return {Object} The location of the userQuery as a JS object
+     */
     get locationJSON() {
         return JSON.parse(this.location)
     }
 
+    /**
+     * @return {Object} The result of the userQuery as a JS object
+     */
     user() {
         return {
             user_id: this.user_id,
@@ -101,16 +122,26 @@ exports.userQuerySchema = new Schema(UserQuery, {
 
 
 class StreamQuery extends Entity {
+
+    /**
+     * @return {Object} The latencies of the streamQuery as a JS object
+     */
     get latenciesJSON() {
         return this.latencies.map((latency) => {
             return JSON.parse(latency)
         })
     }
 
+    /**
+     * @return {Object} The location of the streamQuery as a JS object
+     */
     get locationJSON() {
         return JSON.parse(this.location)
     }
 
+    /**
+     * @return {Object} The result of the streamQuery as a JS object
+     */
     stream() {
         return {
             stream_id: this.stream_id,

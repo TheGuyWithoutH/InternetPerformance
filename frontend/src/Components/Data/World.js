@@ -1,3 +1,9 @@
+/**
+ * @file World map component for displaying the world inside the map
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React, { useEffect, useState } from "react";
 import { scaleLinear } from "d3-scale";
 import {
@@ -7,9 +13,10 @@ import { backendConfig } from "../../Services/config";
 import "../../Assets/Styles/Components/WorldMap.css";
 import Country from "./Country";
 
+// Max value for the color scale
 const maxValue = 500
 
-
+// Set the color scale for the map
 const colorScale = (value) => {
   if(value > maxValue) {
     value = maxValue
@@ -23,6 +30,7 @@ const colorScale = (value) => {
 const World = (props) => {
   const [worldData, setWorldData] = useState(null)
 
+  // Fetch the world data from the backend if it is not already fetched
   useEffect(() => {
     if (!worldData) {
       fetch(backendConfig.url + ":" + backendConfig.port + "/api/search/world")

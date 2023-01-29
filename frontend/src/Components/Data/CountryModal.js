@@ -1,3 +1,9 @@
+/**
+ * @file Country modal component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 
 const CountryModal = ({geo, color, setModal}) => {

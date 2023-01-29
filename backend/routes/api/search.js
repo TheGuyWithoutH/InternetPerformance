@@ -1,5 +1,5 @@
 /**
- * @file
+ * @file Manages the HTTP routes of the search API
  * @author Ugo Balducci
  * @version 1.0.0
  */
@@ -11,7 +11,6 @@ const searchController = require('../../controllers/api/search');
 const prepareArgs = require("../../middlewares/parametersPreparation")
 
 router.get('/world', searchController.worldMap)
-
 router.get('/locations', prepareArgs, searchController.makeSearch)
 
 module.exports = router

@@ -30,9 +30,7 @@ exports.queryTypes = {
  * Performs the query on the specified database, on the collection with latencies and times.
  * @param {MongoClient} db The database to query
  * @param {Object} parameters Javascript Object containing the parameters for the time request : @argument from specifies the start date while @argument to specifies the end date
- * @param {Number} skip The number of documents to skip
- * @param {Number} limit The maximum number of documents to return
- * @param {Boolean} groupLatencies If true, the latencies will be grouped by user_id and stream_id
+ * @param {Array} aggregation Array of objects containing the aggregation pipeline
  * @returns {Promise} A promise containing the result of the query on database
  */
 exports.latencyQuery = async (db, parameters, aggregation) => {
@@ -98,10 +96,10 @@ exports.locationQuery = async (db, parameters) => {
 }
 
 /**
- * 
- * @param {*} db 
- * @param {*} parameters 
- * @returns 
+ * Performs the query on the specified database, on the collection containing all pre-determined locations.
+ * @param {MongoClient} db The database to query
+ * @param {Object} parameters Javascript Object containing the parameters for the location search
+ * @returns {Promise} A promise containing the result of the query on database
  */
 exports.searchQuery = (db, parameters) => {
     _checkCollectionExist(db, config.locationCollectionName);
@@ -157,6 +155,7 @@ exports.query = (db, parameters, reqType) => {
         case this.queryTypes.TIME:
         case this.queryTypes.STREAMID:
         case this.queryTypes.WORLD: {
+            // Latency query first then location query
             const aggregation = [accumulator(parameters.streamId), {$sort: {_id: 1}}, projection]
             return this.latencyQuery(db, parameters, aggregation).then(
                 (doc) => {
@@ -180,6 +179,7 @@ exports.query = (db, parameters, reqType) => {
         case this.queryTypes.SPATIAL:
         case this.queryTypes.COMBINED:
         case this.queryTypes.USERID:
+            // Location query first then latency query
             return this.locationQuery(db, parameters).then(
                 (doc) => {
                     const users = doc.map((elem) => elem.user_id)
@@ -198,14 +198,17 @@ exports.query = (db, parameters, reqType) => {
                             })
                         })
         case this.queryTypes.SEARCH:
+            // Search query
             return this.searchQuery(db, parameters)
         case this.queryTypes.TIMEFRAME:
+            // Latency query only for time frame
             const aggregation = parameters.meanLatency ? 
                 [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }, mean_latency: {$avg: "$latency"}}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users", "mean_latency": "$mean_latency"}}]
                 :
                 [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users"}}]
             return this.latencyQuery(db, parameters, aggregation)
         case this.queryTypes.TABLE:
+            // Location query then latency query for table view
             return this.locationQuery(db, parameters).then(
                 (doc) => {
                     const users = doc.map((elem) => elem.user_id)
@@ -215,6 +218,7 @@ exports.query = (db, parameters, reqType) => {
 
                     const aggregation = []
 
+                    // Select entries in the table page requested
                     if(parameters.skip > 0) aggregation.push({$skip: parameters.skip})
                     if(parameters.limit > 0) aggregation.push({$limit: parameters.limit})
 

@@ -1,3 +1,9 @@
+/**
+ * @file Dynamic button component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import {useState} from 'react';
 import {Link} from 'react-router-dom'
 

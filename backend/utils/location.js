@@ -1,3 +1,14 @@
+/**
+ * @file Utility functions for the location data
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
+/**
+ * Extracts the location query from the query object
+ * @param {Object} query The query object
+ * @return {Object} The location query object
+ */
 exports.extractLocationQuery = (query) => {
     const locationQuery = {}
 

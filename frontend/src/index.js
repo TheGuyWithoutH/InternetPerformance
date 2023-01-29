@@ -1,3 +1,9 @@
+/**
+ * @file Main index file for the React app
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';

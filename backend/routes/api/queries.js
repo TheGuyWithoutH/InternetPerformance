@@ -1,5 +1,5 @@
 /**
- * @file Manages the HTTP routes of the API
+ * @file Manages the HTTP routes of the query API
  * @author Ugo Balducci
  * @version 1.0.0
  */

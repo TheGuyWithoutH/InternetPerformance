@@ -1,10 +1,9 @@
 /**
- * @file
+ * @file Query Redis cache for data
  * @author Ugo Balducci
  * @version 1.0.0
  */
 
-const { Repository } = require('redis-om')
 const { client, expirationTimes } = require('../../configs/cache.config')
 const { timeFrameSchema, locationQuerySchema, userQuerySchema, streamQuerySchema } = require('./cacheSchemas')
 
