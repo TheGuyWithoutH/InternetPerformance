@@ -1,3 +1,9 @@
+/**
+ * @file Time frame search component for the time frame search tab of the search page
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 
 const TimeFrameSearch = ({tab, switchTab }) => {

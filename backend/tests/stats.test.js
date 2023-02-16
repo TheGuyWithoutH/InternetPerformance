@@ -1,3 +1,9 @@
+/**
+ * @file Tests for array statictics functions
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 const { sum, mean, standardDeviation: sd, median, quantile, Q1, Q3 } = require("../services/api/arrayStatistics")
 
 describe("Tests Sum", () => {

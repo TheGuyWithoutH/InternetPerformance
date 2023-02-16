@@ -85,6 +85,7 @@ Some of the types described below might be ambiguous, so here is a quick reminde
 <br>
 
 #### **Coordinates**
+
 According to GeoJSON standards used in MongoDB, the **coordinates** must be specified via an **array of floats** :
 
 ```json
@@ -108,7 +109,7 @@ The time metrics we use in this project are the **timestamps** or namely the **U
 
 #### **IDs**
 
-As we use MongoDB as database system, we use the default `_id` field to identify each document. It is a **12-byte value** represented by a *24-character hexadecimal `string`*. It's uniqueness for each document enables us to query for a specific document, and help link multiple databases together - as a foreign key field would do in SQL -.
+As we use MongoDB as database system, we use the default `_id` field to identify each document. It is a **12-byte value** represented by a _24-character hexadecimal `string`_. It's uniqueness for each document enables us to query for a specific document, and help link multiple databases together - as a foreign key field would do in SQL -.
 
 <br>
 
@@ -368,6 +369,7 @@ Arguments for the request :
 - **`from`** (Int) : retrieve latencies starting from this timestamp, default at `0`.
 - **`to`** (Int) : retrieve latencies until this timestamp, default at `∞`.
 - **`frame`** (Int) : number of seconds per frame
+- **`meanLatency`** (String) : enables the calculation of the mean latency for this timeframe when `on`, default is `off`.
 
 <br>
 
@@ -379,13 +381,19 @@ Arguments for the request :
 		"from": TIMESTAMP,
 		"to": TIMESTAMP,
 		"user_count": INTEGER,
-		"latency_count": INTEGER
+		"latency_count": INTEGER,
+		/*      **For** *latency-only* **mode**
+		"mean_latency": INTEGER
+		*/
 	},
 	{
 		"from": TIMESTAMP,
 		"to": TIMESTAMP,
 		"user_count": INTEGER,
-		"latency_count": INTEGER
+		"latency_count": INTEGER,
+		/*      **For** *latency-only* **mode**
+		"mean_latency": INTEGER
+		*/
 	},
 ]
 ```
@@ -409,8 +417,8 @@ Arguments for the request :
 - **`to`** (Int) : retrieve latencies until this timestamp, default at `∞`.
 - **`limit`** (Int) : give the maximum of users to return.
 - **`skip`** (Int) : give the number of data points to skip.
-- ***`**sortBy**`** (String) : the name of the field to sort the results by.
-- **`**sortOrder**`** (Int) : the order of the sorting, `1` for ascending order, `-1` for descending order.
+- **`sortBy`** (String) : the name of the field to sort the results by.
+- **`sortOrder`** (Int) : the order of the sorting, `1` for ascending order, `-1` for descending order.
 
 <br>
 
@@ -446,6 +454,59 @@ Arguments for the request :
 		"latency": INTEGER,
 		"timestamp": TIMESTAMP
 	},
+]
+```
+
+<br>
+
+## 6. Search Query
+
+#### Endpoint : `/api/search/locations`
+
+Arguments for the request :
+
+- **`name`** (String) : the name of the location wanted, no default.
+- **`countryCode`** (String) : the country code (Alpha-2) of the requests wanted, no default.
+- **`admin1Code`** (String) : the region/administrative area code (Fipscode) of the requests wanted, no default.
+- **`featureCode`** (String) : the type of location requested, `"P"` for a country, `"R"` for a region, `"V"` for a city, no default.
+- **`additionalInfo`** (String) : (_for countries only_) enables additional information on a country when `on` , like the population, position, geometry and stats. Default is `off`.
+
+<br>
+
+### Response
+
+```json
+[
+	{
+		"feature_code": code,
+		"name": string,
+		"country_code": string,
+		"position": [longitude, latitude],
+		"population": integer,
+		"geometry": {
+					"type": "Polygon",
+          "coordinates": [
+              [
+                  [
+                      longitude,
+                      latitude
+                  ],
+					...
+				]
+			]
+		},
+		"stats": {
+				"mean": x.,
+				"sd": x.,
+				"quartile1": x,
+				"median": x,
+				"quartile3": x,
+				"10%": x,
+				"90%": x,
+				"user_count": x
+		}
+	},
+	...
 ]
 ```
 

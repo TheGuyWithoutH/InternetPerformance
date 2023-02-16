@@ -1,3 +1,10 @@
+/**
+ * @file Search map component for the search data page and location selection with visual google map search 
+ * @author Ugo Balducci
+ * @version 1.0.0
+ * @see https://react-google-maps-api-docs.netlify.app/
+ */
+
 import React from 'react';
 import { GoogleMap, useJsApiLoader } from '@react-google-maps/api';
 
@@ -15,7 +22,7 @@ const containerStyle = {
 const SearchMap = () => {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: "AIzaSyDwKPUsVhsrUFtZCKqo659N9gCOFDbxQwY"
+        googleMapsApiKey: "AIzaSyDwKPUsVhsrUFtZCKqo659N9gCOFDbxQwY"  //Ugo's API key - replace with your own
     })
 
     const [map, setMap] = React.useState(null)

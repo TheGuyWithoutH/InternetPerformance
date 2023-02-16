@@ -1,3 +1,9 @@
+/**
+ * @file Tests for the date parsing function
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 const parseDate = require("../utils/parseDate")
 
 describe('Date tests', () =>  {

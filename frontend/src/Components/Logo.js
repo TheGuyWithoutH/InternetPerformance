@@ -1,3 +1,9 @@
+/**
+ * @file Logo component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../Assets/Images/logo.png'

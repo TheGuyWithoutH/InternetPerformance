@@ -1,3 +1,9 @@
+/**
+ * @file Search data page component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React, {useState} from 'react';
 import '../Assets/Styles/DataOverview.css';
 import Stepper from "react-stepper-horizontal";
@@ -8,15 +14,18 @@ import TimeFrameSearch from '../Components/Search/TimeFrameSearch';
 import TableSearch from '../Components/Search/TableSearch';
 import DiagramSearch from '../Components/Search/DiagramSearch';
 
+// Define the steps for the stepper
 const steps = [{title: 'Choose Location'}, {title: 'Choose Time Period'}, {title: 'Data Table'}, {title: 'Choose Diagram'}];
 
 const Search = () => {
     const [currentTab, setCurrentTab] = useState(0);
 
+    // Switch to the next tab
     const switchTab = (nextTab) => {
         setCurrentTab(nextTab);
     }
 
+    // Select the tab to display for stepped interface
     const selectTab = (tab) => {
         switch (tab) {
             case 0:

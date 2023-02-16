@@ -1,10 +1,14 @@
+/**
+ * @file Location search component for the search data page and location selection
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 
 import SearchMap from './SearchMap';
 
 const LocationSearch = ({tab, switchTab }) => {
-
-    
 
     return (
         <div className='search-location-content'>

@@ -74,9 +74,6 @@ nav_order: 2
     }
 </style>
 
-
-
-
 # Installation
 
 To be able to run the code of the project, you will need to install the following dependencies:
@@ -87,11 +84,10 @@ To be able to run the code of the project, you will need to install the followin
 
 <img src="https://www.docker.com/wp-content/uploads/2022/03/horizontal-logo-monochromatic-white.png"
      alt="Docker Logo"
-     style="display: block; max-height:230px; height: auto; width: auto; margin: auto; max-width: 60%" /> 
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto; max-width: 60%" />
 {: .flex-justify-between}
 
 Docker is a containerization platform that allows you to run applications in a sandboxed environment. It enables you to quickly set up the project without having to install all the dependencies on your machine. You can find the installation instructions for Docker [here](https://docs.docker.com/get-docker/).
-
 
 <blockquote class="important"><p>If you are using Windows, you will need to enable the Windows Subsystem Linux 2 backend. You can find the instructions <a href="https://docs.docker.com/docker-for-windows/wsl/">here</a>. WSL will be useful for another step of the installation process.</p></blockquote>
 
@@ -101,10 +97,10 @@ I also recommand you to install Docker Desktop, which is a graphical interface f
 
 <img src="https://www.mongodb.com/assets/images/global/leaf.png"
      alt="MongoDB Logo"
-     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" />
 {: .flex-justify-between}
 
-MongoDB is a NoSQL database that we use to store the data in a JSON fashion. I you want to install it, you can go [here](https://docs.mongodb.com/manual/installation/). However, thanks to Docker, you do not need to install MongoDB on your own machine. It is already included in one of the containers that you will run, and will be loaded automatically. 
+MongoDB is a NoSQL database that we use to store the data in a JSON fashion. I you want to install it, you can go [here](https://docs.mongodb.com/manual/installation/). However, thanks to Docker, you do not need to install MongoDB on your own machine. It is already included in one of the containers that you will run, and will be loaded automatically.
 
 <p class="note">If you need to look for some documentation online, note that the version of MongoDB that we use is 6.0.0.</p>
 
@@ -114,7 +110,7 @@ If you want to have a graphical interface to look at the data stored in the data
 
 <img src="https://git-scm.com/images/logos/downloads/Git-Icon-1788C.png"
      alt="Git Logo"
-     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" /> 
+     style="display: block; max-height:230px; height: auto; width: auto; margin: auto" />
 {: .flex-justify-between}
 
 Git is a version control system that we use to manage the code of the project. If you still haven't used it yet, you can find the installation instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
@@ -137,7 +133,7 @@ git clone git@github.com:TheGuyWithoutH/InternetPerformance.git InternetPerforma
 
 ### Installing the modules
 
-This project uses NodeJS and NPM to manage the dependencies. You will need to install the dependencies of the project by running the following command in your terminal in both ``backend`` and ``frontend`` folders:
+This project uses NodeJS and NPM to manage the dependencies. You will need to install the dependencies of the project by running the following command in your terminal in both `backend` and `frontend` folders:
 
 ```bash
 npm install
@@ -164,6 +160,24 @@ Open WSL and find the repository folder in `/mnt/c/Users/your_username/...` (`mn
 ```bash
 sudo chown -R 999:999 mongodb/data
 ```
+
+### Adding data to the database
+
+The database is empty when you clone the repository. You will need to add some data to it. To do so, you will need to follow the following steps:
+
+- Run the scripts for location pre-processing if no JSON is provided to you
+- Add these data to MongoDB using MongoDB Compass or Mongoimport in a collection called `locations`
+- Add all user locations to MongoDB using MongoDB Compass or Mongoimport in a collection called `users`
+- Add all user latencies to MongoDB using MongoDB Compass or Mongoimport in a collection called `latencies`
+
+For the purpose of optimizing queries in our project, the following indexes were created, but you can change them to improve the performance of your queries :
+
+- `location.coordinates_2dsphere` ( GEOSPATIAL ) : a geographical index to query locations based on coordinates and areas.
+- `location.country` ( REGULAR ) : a string index to query locations based on the country.
+- `location.country_location.region` ( COMPOUND ) : a compound index to query locations based on the region inside a country.
+- `location.country_location.region_location.city` ( COMPOUND ) : a compound index to query locations based on the city inside a region, itself inside a country.
+- `user_id_1` ( REGULAR ) : an ObjectID index to query latency records based on the user.
+- `date_-1` ( CLUSTERED ) : a clustered index to query latency records based on their timestamp.
 
 ## Running the containers
 

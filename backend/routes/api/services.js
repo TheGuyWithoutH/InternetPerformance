@@ -10,8 +10,6 @@ const router = express.Router();
 const servicesController = require('../../controllers/api/services')
 const prepareArgs = require("../../middlewares/parametersPreparation")
  
-router.use(express.static('static/maps'));
-
 router.get('/timeframe/', prepareArgs, servicesController.timeframeQuery)
 router.get('/table/', prepareArgs, servicesController.tableQuery)
  

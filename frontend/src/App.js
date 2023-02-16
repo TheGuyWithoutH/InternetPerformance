@@ -1,3 +1,9 @@
+/**
+ * @file Main App component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import {
   BrowserRouter as Router,
   Routes,

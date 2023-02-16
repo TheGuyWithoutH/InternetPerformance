@@ -10,6 +10,7 @@ const dotenv = require("dotenv")
 
 dotenv.config()
 
+// Normalize a port into a number, string, or false.
 const normalizePort = val => {
   const port = parseInt(val, 10);
 
@@ -22,6 +23,7 @@ const normalizePort = val => {
   return false;
 };
 
+// Set the port
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
@@ -47,6 +49,7 @@ const errorHandler = error => {
   }
 };
 
+// Create the server
 const server = http.createServer(app);
 
 server.on('error', errorHandler);
@@ -57,4 +60,5 @@ server.on('listening', () => {
   console.log('Listening on ' + bind);
 });
 
+// Start the server
 server.listen(port);

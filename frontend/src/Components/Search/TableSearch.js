@@ -1,3 +1,9 @@
+/**
+ * @file Table component for the search page that displays the results of the search in a table format
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 
 const TableSearch = ({tab, switchTab }) => {

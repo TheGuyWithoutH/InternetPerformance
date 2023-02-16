@@ -1,6 +1,13 @@
+/**
+ * @file Main menu component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+// Styles for the menu indicator (the line under the tabs)
 const tabsStyles = {
     '/': {
         width: 0,

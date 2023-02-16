@@ -1,3 +1,9 @@
+/**
+ * @file URL redirection component
+ * @author Ugo Balducci
+ * @version 1.0.0
+ */
+
 import React, { useEffect } from "react";
 
 const Redirect = ( props ) => {
