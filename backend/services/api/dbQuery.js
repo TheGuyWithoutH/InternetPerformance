@@ -22,6 +22,7 @@ exports.queryTypes = {
     STREAMID: "streamId",
     WORLD: "world",
     SEARCH: "search",
+    RECENT: "recent",
     TIMEFRAME: "timeframe",
     TABLE: "table"
 }
@@ -52,6 +53,13 @@ exports.latencyQuery = async (db, parameters, aggregation) => {
         query.date.$lt = parameters.to.valueOf() / 1000
     }
 
+    if(parameters.range){
+        query.date = {}
+
+        query.date.$gte = Math.floor(Date.now() / 1000) - 2678400 - parameters.range
+        query.date.$lte = Math.floor(Date.now() / 1000) - 2678400
+    }
+
     if(parameters.users) {
         query.user_id = {
             $in: parameters.users
@@ -66,9 +74,21 @@ exports.latencyQuery = async (db, parameters, aggregation) => {
         query.stream_id = parameters.stream_id
     }
 
-    var pipeline = [{$match: query}, {$sort: {[parameters.sortBy]: parameters.sortOrder, _id: 1}}].concat(aggregation)
+    query_params = []
 
-    return _dbQuery(db, config.latencyCollectionName, pipeline)
+    if (parameters.limit && parameters.page){
+        query_params = [{$skip: (parameters.page - 1) * parameters.limit}, {$limit : parameters.limit}]
+    }
+
+    sorting_order = {_id: 1}
+
+    if(parameters.sortBy && parameters.sortOrder){
+        sorting_order = {...{[parameters.sortBy]: parameters.sortOrder}, ...{_id: 1}}
+    }
+
+    query_params = query_params.concat([{$match: query}, {$sort: sorting_order}]).concat(aggregation)
+
+    return _dbQuery(db, config.latencyCollectionName, query_params)
 }
 
 
@@ -91,7 +111,15 @@ exports.locationQuery = async (db, parameters) => {
         if(cachedQuery) return cachedQuery
     }
 
-    return _dbQuery(db, config.userCollectionName, [{$match: query}]).then(result => {
+    query_params = []
+
+    if (parameters.limit && parameters.page){
+        query_params = [{$skip: (parameters.page - 1) * parameters.limit}, {$limit : parameters.limit}]
+    }
+
+    query_params = query_params.concat([{$match: query}])
+
+    return _dbQuery(db, config.userCollectionName, query_params).then(result => {
         if(!parameters.user_id) result.forEach((elem) => saveLocationQueryInCache(elem, query))
         return result
     })
@@ -145,6 +173,7 @@ exports.searchQuery = (db, parameters) => {
     return _dbQuery(db, config.locationCollectionName, pipeline)
 }
 
+
 /**
  * Manages all the logic to perform queries of different query types.
  * @param {MongoClient} db The database to query
@@ -152,7 +181,6 @@ exports.searchQuery = (db, parameters) => {
  * @returns {Promise} A promise containing the result of the query on database
  */
 exports.query = (db, parameters, reqType) => {
-    
     switch (reqType) {
         case this.queryTypes.TIME:
         case this.queryTypes.STREAMID:
@@ -184,7 +212,7 @@ exports.query = (db, parameters, reqType) => {
                 (doc) => {
                     const users = doc.map((elem) => elem.user_id)
                     
-                    const params = structuredClone(parameters)
+                    const params = formatParams(parameters)
                     params.users = users
 
                     const aggregation = [accumulator(parameters.streamId), {$sort: {_id: 1}}, projection]
@@ -199,6 +227,17 @@ exports.query = (db, parameters, reqType) => {
                         })
         case this.queryTypes.SEARCH:
             return this.searchQuery(db, parameters)
+        case this.queryTypes.RECENT:
+            return this.locationQuery(db, parameters).then(
+                (doc) => {
+                    const users = doc.map((elem) => elem.user_id)
+                    
+                    const params = formatParams(parameters)
+                    params.users = users
+        
+                    const aggregation = [accumulator(parameters.streamId), {$sort: {_id: 1}}, projection]
+                    return this.latencyQuery(db, params, aggregation)          
+                })
         case this.queryTypes.TIMEFRAME:
             const aggregation = parameters.meanLatency ? 
                 [{$bucket: { groupBy: "$date", boundaries: parameters.boundaries, output: {"latency_count": { $sum: 1 }, users: { $push: "$user_id" }, mean_latency: {$avg: "$latency"}}}}, {$project: {_id: 0, "from": "$_id", "to": { $add : ["$_id", parameters.frame] }, "latency_count": "$latency_count", "users": "$users", "mean_latency": "$mean_latency"}}]
@@ -269,6 +308,30 @@ const _checkCollectionExist = (db, collName) => {
     });
 }
 
+
+const formatParams = (parameters) => {
+    params = structuredClone(parameters)
+
+    if (params.limit){
+        delete params["limit"]
+    }
+
+    if (params.page){
+        delete params["page"]
+    }
+
+    return params
+}
+
+
+/**
+            }
+            // The collection does not exist
+            throw new MongoError("The collection " + collName + " does not exist")
+        }
+    });
+}
+
 /**
  * Prepare the accumulator for aggregation pipeline to combine outputs from same user.
  * @param {Boolean} streamId Decides wether to includes stream ids or not in results
@@ -296,6 +359,7 @@ const accumulator = (streamId) => {
                     $push: {
                         date: "$date", 
                         latency: "$latency",
+                        service_id: "$game_id"
                     }
                 } 
             }

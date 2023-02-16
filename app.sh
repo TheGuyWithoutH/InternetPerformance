@@ -27,7 +27,8 @@ clean() {
   remove_unused_volumes
 }
 
-run() {
+run() 
+{
   echo "Cleaning..."
   clean
   

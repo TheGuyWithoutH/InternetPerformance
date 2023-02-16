@@ -9,11 +9,13 @@ const router = express.Router();
 
 const queryController = require('../../controllers/api/queries')
 const prepareArgs = require("../../middlewares/parametersPreparation")
+const preparePags = require("../../middlewares/paginationPreparation")
 
-router.get('/time/', prepareArgs, queryController.makeGlobalQuery)
-router.get('/spatial/', prepareArgs, queryController.makeGlobalQuery)
-router.get('/world/', prepareArgs, queryController.makeWorldQuery)
-router.get('/user/', prepareArgs, queryController.makeUserIdQuery)
-router.get('/stream/', prepareArgs, queryController.makeStreamIdQuery)
+router.get('/time/', preparePags, prepareArgs, queryController.makeGlobalQuery)
+router.get('/spatial/', preparePags, prepareArgs, queryController.makeGlobalQuery)
+router.get('/world/', preparePags, queryController.makeWorldQuery)
+router.get('/user/', preparePags, queryController.makeUserIdQuery)
+router.get('/stream/', preparePags, queryController.makeStreamIdQuery)
+router.get("/recent/", queryController.makeRecentQuery)
 
 module.exports = router

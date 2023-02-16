@@ -48,9 +48,11 @@ exports.makeGlobalQuery = (req, res, next) => {
 
                 result = req.query.latencyOnly ?
                     {
+                        pagination: formatPagination(req.query),
                         stats: makeStats(latencyArray),
                         latencies: doc.flatMap((elem) => elem.latencies)
                     } : {
+                        pagination: formatPagination(req.query),
                         stats: makeStats(latencyArray),
                         users: doc
                     }
@@ -67,6 +69,40 @@ exports.makeGlobalQuery = (req, res, next) => {
     
            
 }
+
+
+exports.makeRecentQuery = (req, res, next) => {
+    let queryType = queryTypes.RECENT
+
+    assert(req.query.country || req.query.country_code, Error("Country-level data required"))
+    assert(req.query.game, Error("Game data required"))
+
+    if(!req.query.range) {
+        req.query.range = 5 * 60  
+    }else{
+        req.query.range = parseInt(req.query.range) * 60
+    }
+
+    query(db, req.query, queryType)
+        .then((doc) => {
+            let result = {}
+                
+            if(doc.length > 0) {
+                const latencyArray = doc.flatMap((elem) => elem.latencies.map((data) => data.latency))
+                result = makeStats(latencyArray)
+            }
+
+            res.status(200).json(result)
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(400).json({
+                error: error
+            });
+        })
+    
+}
+
 
 /**
  * Controller for queries by user id
@@ -110,9 +146,11 @@ exports.makeUserIdQuery = async (req, res, next) => {
 
                 result = req.query.latencyOnly ?
                 {
+                    pagination: formatPagination(req.query),
                     stats: makeStats(latencyArray),
                     latencies: user.latencies
                 } : {
+                    pagination: formatPagination(req.query),
                     stats: makeStats(latencyArray),
                     user: user
                 }
@@ -174,9 +212,11 @@ exports.makeStreamIdQuery = async (req, res, next) => {
 
                 result = req.query.latencyOnly ?
                 {
+                    pagination: formatPagination(req.query),
                     stats: makeStats(latencyArray),
                     latencies: user.latencies
                 } : {
+                    pagination: formatPagination(req.query),
                     stats: makeStats(latencyArray),
                     stream: stream
                 }
@@ -247,5 +287,12 @@ const makeStats = (array) => {
         "10%": stats.quantile(array, 0.1),
         "90%": stats.quantile(array, 0.9),
         "99%": stats.quantile(array, 0.99)
+    }
+}
+
+const formatPagination = (query) => {
+    return {
+        "number of results": query.limit,
+        page: query.page
     }
 }

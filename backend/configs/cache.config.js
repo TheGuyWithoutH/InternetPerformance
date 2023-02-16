@@ -1,4 +1,7 @@
 const { Client } = require('redis-om')
+const dotenv = require("dotenv")
+
+dotenv.config()
 
 exports.client = new Client()
 

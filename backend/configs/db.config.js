@@ -15,7 +15,7 @@ const config = {
     password: '',
     host: process.env.MONGO_HOST || '127.0.0.1',
     port: process.env.MONGO_PORT || 27017,
-    databaseName: 'test_semester_project',
+    databaseName: 'public',
     userCollectionName: 'user_locations',
     latencyCollectionName: 'latency',
     locationCollectionName: 'locations',
